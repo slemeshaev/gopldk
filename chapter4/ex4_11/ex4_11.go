@@ -138,9 +138,15 @@ func editIssue(owner, repo, number string) {
 }
 
 func openIssue(owner, repo, number string) {
-	// Implementation
+	_, err := EditIssue(owner, repo, number, map[string]string{"state": "open"})
+	if err != nil {
+		log.Fatal(err)
+	}
 }
 
 func closeIssue(owner, repo, number string) {
-	// Implementation
+	_, err := EditIssue(owner, repo, number, map[string]string{"state": "closed"})
+	if err != nil {
+		log.Fatal(err)
+	}
 }
