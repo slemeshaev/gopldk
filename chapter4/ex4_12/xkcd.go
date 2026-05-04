@@ -28,6 +28,7 @@ func main() {
 		fmt.Fprintln(os.Stderr, usage)
 		os.Exit(1)
 	}
+
 	cmd := os.Args[1]
 	switch cmd {
 	case "get":
