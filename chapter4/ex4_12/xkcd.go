@@ -53,7 +53,14 @@ func main() {
 
 		fmt.Println(comic)
 	case "index":
-		// Implementation
+		if len(os.Args) != 3 {
+			usageDie()
+		}
+
+		err := index(os.Args[2])
+		if err != nil {
+			log.Fatal("Error serializing indexes", err)
+		}
 	case "search":
 		// Implementation
 	default:
@@ -81,4 +88,26 @@ func getComic(n int) (Comic, error) {
 	}
 
 	return comic, nil
+}
+
+func index(file string) error {
+	nworkers := 20
+	done := make(chan int, 0)
+	// Need to implement getComics
+	comicChan, error := getComics(nworkers, done)
+	if err != nil {
+		return error
+	}
+
+	go func() {
+		for i := 0; i < nworkers; i++ {
+			<-done
+		}
+		close(done)
+		close(comicChan)
+	}()
+
+	// Need to implement indexComicsDealer(comicChan, filename)
+
+	return nil
 }
