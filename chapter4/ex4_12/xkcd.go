@@ -123,7 +123,7 @@ func getComics(nworkers int, done chan int) (chan Comic, error) {
 	comics := make(chan Comic, 5*nworkers)
 	comicsNums := make(chan int, 1*nworkers)
 
-	for i := 0; i < nworkers; i++ {
+	for range nworkers {
 		go fetcher(comicsNums, comics, done)
 	}
 
