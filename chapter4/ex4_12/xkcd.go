@@ -90,24 +90,61 @@ func getComic(n int) (Comic, error) {
 	return comic, nil
 }
 
-func index(file string) error {
+func index(filename string) error {
 	nworkers := 20
-	done := make(chan int, 0)
-	// Need to implement getComics
-	comicChan, error := getComics(nworkers, done)
+	done := make(chan int)
+
+	comicChan, err := getComics(nworkers, done)
 	if err != nil {
-		return error
+		return err
 	}
 
 	go func() {
-		for i := 0; i < nworkers; i++ {
+		for range nworkers {
 			<-done
 		}
+
 		close(done)
 		close(comicChan)
 	}()
 
-	// Need to implement indexComicsDealer(comicChan, filename)
+	indexComicsDealer(comicChan, filename)
 
 	return nil
+}
+
+func getComics(nworkers int, done chan int) (chan Comic, error) {
+	max, err := getComicCount()
+	if err != nil {
+		return nil, err
+	}
+	fmt.Println("max", max)
+
+	comics := make(chan Comic, 5*nworkers)
+	comicsNums := make(chan int, 1*nworkers)
+
+	for i := 0; i < nworkers; i++ {
+		go fetcher(comicsNums, comics, done)
+	}
+
+	go dispatcher(comicsNums, max)
+
+	return comics, nil
+}
+
+func indexComicsDealer(comicChan chan Comic, filename string) {
+	// Need to implement
+}
+
+func getComicCount() (int, error) {
+	// Need to implement
+	return 0, nil
+}
+
+func fetcher(comicNums chan int, comics chan Comic, done chan int) {
+	// Need to implement
+}
+
+func dispatcher(comicNums chan int, max int) {
+	// Need to implement
 }
