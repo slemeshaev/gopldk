@@ -132,13 +132,27 @@ func getComics(nworkers int, done chan int) (chan Comic, error) {
 	return comics, nil
 }
 
-func indexComicsDealer(comicChan chan Comic, filename string) {
-	// Need to implement
+func getComicCount() (int, error) {
+	resp, err := http.Get("https://xkcd.com/info.0.json")
+	if err != nil {
+		return 0, err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		return 0, fmt.Errorf("can't get main page: %s", resp.Status)
+	}
+
+	var comic Comic
+	if err = json.NewDecoder(resp.Body).Decode(&comic); err != nil {
+		return 0, err
+	}
+
+	return comic.Num, nil
 }
 
-func getComicCount() (int, error) {
+func indexComicsDealer(comicChan chan Comic, filename string) {
 	// Need to implement
-	return 0, nil
 }
 
 func fetcher(comicNums chan int, comics chan Comic, done chan int) {
