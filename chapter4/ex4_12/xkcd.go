@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/gob"
 	"encoding/json"
 	"fmt"
 	"log"
@@ -8,6 +9,9 @@ import (
 	"os"
 	"strconv"
 )
+
+type WordIndex map[string]map[int]bool
+type NumIndex map[int]Comic
 
 type Comic struct {
 	Num              int
@@ -152,7 +156,34 @@ func getComicCount() (int, error) {
 }
 
 func indexComicsDealer(comicChan chan Comic, filename string) {
+	wordIndex, numIndex := indexComics(comicChan)
+	file, err := os.Create(filename)
+	if err != nil {
+		log.Fatal(err)
+		return
+	}
+	defer file.Close()
+
+	encoder := gob.NewEncoder(file)
+	err = encoder.Encode(wordIndex)
+	if err != nil {
+		log.Fatal(err)
+		return
+	}
+
+	err = encoder.Encode(numIndex)
+	if err != nil {
+		log.Fatal(err)
+		return
+	}
+}
+
+func indexComics(comics chan Comic) (WordIndex, NumIndex) {
+	wordIndex := make(WordIndex)
+	numIndex := make(NumIndex)
+
 	// Need to implement
+	return wordIndex, numIndex
 }
 
 func fetcher(comicNums chan int, comics chan Comic, done chan int) {
