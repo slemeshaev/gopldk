@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bufio"
 	"encoding/gob"
 	"encoding/json"
 	"fmt"
@@ -8,6 +9,7 @@ import (
 	"net/http"
 	"os"
 	"strconv"
+	"strings"
 )
 
 type WordIndex map[string]map[int]bool
@@ -182,7 +184,22 @@ func indexComics(comics chan Comic) (WordIndex, NumIndex) {
 	wordIndex := make(WordIndex)
 	numIndex := make(NumIndex)
 
-	// Need to implement
+	for comic := range comics {
+		numIndex[comic.Num] = comic
+		fmt.Printf("Dealing with comic %d\n", comic.Num)
+
+		scanner := bufio.NewScanner(strings.NewReader(comic.Transcript))
+		scanner.Split(ScanWords)
+
+		for scanner.Scan() {
+			token := strings.ToLower(scanner.Text())
+			if _, ok := wordIndex[token]; !ok {
+				wordIndex[token] = make(map[int]bool, 1)
+			}
+			wordIndex[token][comic.Num] = true
+		}
+	}
+
 	return wordIndex, numIndex
 }
 
@@ -192,4 +209,9 @@ func fetcher(comicNums chan int, comics chan Comic, done chan int) {
 
 func dispatcher(comicNums chan int, max int) {
 	// Need to implement
+}
+
+func ScanWords(data []byte, atEOF bool) (advance int, token []byte, err error) {
+	// Need to implement
+	return 0, token, nil
 }
