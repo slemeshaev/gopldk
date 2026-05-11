@@ -204,11 +204,24 @@ func indexComics(comics chan Comic) (WordIndex, NumIndex) {
 }
 
 func fetcher(comicNums chan int, comics chan Comic, done chan int) {
-	// Need to implement
+	for n := range comicNums {
+		comic, err := getComic(n)
+		if err != nil {
+			log.Printf("Can't get comic %d: %s", n, err)
+			continue
+		}
+		comics <- comic
+	}
+	fmt.Println("done")
+	done <- 1
 }
 
 func dispatcher(comicNums chan int, max int) {
-	// Need to implement
+	for i := 1; i <= max; i++ {
+		comicNums <- i
+	}
+	close(comicNums)
+	fmt.Println("closed nums")
 }
 
 func ScanWords(data []byte, atEOF bool) (advance int, token []byte, err error) {
