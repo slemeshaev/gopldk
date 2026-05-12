@@ -10,6 +10,8 @@ import (
 	"os"
 	"strconv"
 	"strings"
+	"unicode"
+	"unicode/utf8"
 )
 
 type WordIndex map[string]map[int]bool
@@ -225,6 +227,31 @@ func dispatcher(comicNums chan int, max int) {
 }
 
 func ScanWords(data []byte, atEOF bool) (advance int, token []byte, err error) {
-	// Need to implement
-	return 0, token, nil
+	i := 0
+	start := 0
+	stop := 0
+
+	for i < len(data) {
+		r, size := utf8.DecodeRune(data[i:])
+		i += size
+		if unicode.IsLetter(r) {
+			start = i - size
+			break
+		}
+	}
+
+	for i < len(data) {
+		r, size := utf8.DecodeRune(data[i:])
+		i += size
+		if !unicode.IsLetter(r) {
+			stop = i - size
+			break
+		}
+	}
+
+	if stop > start {
+		token = data[start:stop]
+	}
+
+	return i, token, nil
 }
