@@ -70,7 +70,16 @@ func main() {
 			log.Fatal("Error serializing indexes", err)
 		}
 	case "search":
-		// Implementation
+		if len(os.Args) != 4 {
+			usageDie()
+		}
+
+		filename := os.Args[2]
+		query := os.Args[3]
+		err := search(query, filename)
+		if err != nil {
+			log.Fatal("Error searching index:", err)
+		}
 	default:
 		usageDie()
 	}
@@ -138,6 +147,11 @@ func getComics(nworkers int, done chan int) (chan Comic, error) {
 	go dispatcher(comicsNums, max)
 
 	return comics, nil
+}
+
+func search(query string, filename string) error {
+	// Implementation
+	return nil
 }
 
 func getComicCount() (int, error) {
