@@ -150,8 +150,30 @@ func getComics(nworkers int, done chan int) (chan Comic, error) {
 }
 
 func search(query string, filename string) error {
-	// Implementation
+	wordIndex, numIndex, err := readIndex(filename)
+	if err != nil {
+		return err
+	}
+
+	comics := comicsContainingWords(strings.Fields(query), wordIndex, numIndex)
+	for _, comic := range comics {
+		fmt.Printf("%+v\n\n", comic)
+	}
+
 	return nil
+}
+
+func comicsContainingWords(words []string, wordIndex WordIndex, numIndex NumIndex) []Comic {
+	comics := make([]Comic, 0)
+	// Implementation
+	return comics
+}
+
+func readIndex(filename string) (WordIndex, NumIndex, error) {
+	var wordIndex WordIndex
+	var numIndex NumIndex
+	// Implementation
+	return wordIndex, numIndex, nil
 }
 
 func getComicCount() (int, error) {
