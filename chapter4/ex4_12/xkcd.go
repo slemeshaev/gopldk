@@ -164,15 +164,40 @@ func search(query string, filename string) error {
 }
 
 func comicsContainingWords(words []string, wordIndex WordIndex, numIndex NumIndex) []Comic {
+	found := make(map[int]int)
 	comics := make([]Comic, 0)
-	// Implementation
+
+	for _, word := range words {
+		for num := range wordIndex[word] {
+			found[num]++
+		}
+	}
+
+	for num, nfound := range found {
+		if nfound == len(words) {
+			comics = append(comics, numIndex[num])
+		}
+	}
+
 	return comics
 }
 
 func readIndex(filename string) (WordIndex, NumIndex, error) {
+	file, err := os.Open(filename)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	dec := gob.NewDecoder(file)
+
 	var wordIndex WordIndex
 	var numIndex NumIndex
-	// Implementation
+
+	err = dec.Decode(&wordIndex)
+	if err != nil {
+		return nil, nil, err
+	}
+
 	return wordIndex, numIndex, nil
 }
 
@@ -250,6 +275,7 @@ func fetcher(comicNums chan int, comics chan Comic, done chan int) {
 		}
 		comics <- comic
 	}
+
 	fmt.Println("done")
 	done <- 1
 }
