@@ -5,11 +5,15 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"os"
+	"strings"
 
 	"golang.org/x/net/html"
 )
+
+var depth int = 0
 
 func main() {
 	doc, err := html.Parse(os.Stdin)
@@ -29,9 +33,61 @@ func prettify(n *html.Node) {
 }
 
 func start(n *html.Node) {
-	// Implementation
+	switch n.Type {
+	case html.ElementNode:
+		startElement(n)
+	case html.TextNode:
+		startText(n)
+	case html.CommentNode:
+		startComment(n)
+	}
+}
+
+func startElement(n *html.Node) {
+	end := ">"
+	if n.FirstChild == nil {
+		end = "/>"
+	}
+
+	attrs := make([]string, 0, len(n.Attr))
+	for _, a := range n.Attr {
+		attrs = append(attrs, fmt.Sprintf(`%s="%s"`, a.Key, a.Val))
+	}
+
+	attrStr := ""
+	if len(n.Attr) > 0 {
+		attrStr = " " + strings.Join(attrs, " ")
+	}
+
+	name := n.Data
+
+	fmt.Fprintf(os.Stdout, "%*s<%s%s%s\n", depth*2, "", name, attrStr, end)
+	depth++
+}
+
+func startText(n *html.Node) {
+	text := strings.TrimSpace(n.Data)
+	if len(text) == 0 {
+		return
+	}
+	fmt.Fprintf(os.Stdout, "%*s%s\n", depth*2, "", n.Data)
+}
+
+func startComment(n *html.Node) {
+	fmt.Fprintf(os.Stdout, "<!--%s-->\n", n.Data)
 }
 
 func end(n *html.Node) {
-	// Implementation
+	switch n.Type {
+	case html.ElementNode:
+		endElement(n)
+	}
+}
+
+func endElement(n *html.Node) {
+	depth--
+	if n.FirstChild == nil {
+		return
+	}
+	fmt.Fprintf(os.Stdout, "%*s</%s>\n", depth*2, "", n.Data)
 }
