@@ -11,6 +11,8 @@ import (
 	"fmt"
 	"log"
 	"os"
+
+	"golang.org/x/net/html"
 )
 
 func main() {
@@ -27,7 +29,26 @@ func main() {
 		return
 	}
 
-	fmt.Println(id, file)
+	doc, err := html.Parse(file)
+	if err != nil {
+		log.Fatal(err)
+		return
+	}
 
-	// Continue...
+	n := ElementByID(doc, id)
+	if n == nil {
+		fmt.Fprintf(os.Stdout, "ID %s not found in %s\n", id, filename)
+	} else {
+		fmt.Fprintf(os.Stdout, "ID %s found in %s\n", id, filename)
+		for _, a := range n.Attr {
+			fmt.Fprintf(os.Stdout, "<%s> has '%s' element, value is '%s'\n",
+				n.Data, a.Key, a.Val)
+		}
+	}
+}
+
+func ElementByID(n *html.Node, id string) *html.Node {
+	// Implementation
+	node := *&html.Node{}
+	return &node
 }
