@@ -69,7 +69,30 @@ func ElementByID(n *html.Node, id string) *html.Node {
 	return forEachElement(n, pre, nil)
 }
 
-func forEachElement(n *html.Node, pre, pos func(n *html.Node) bool) *html.Node {
-	// Implementation
-	return &html.Node{}
+func forEachElement(n *html.Node, pre, post func(n *html.Node) bool) *html.Node {
+	nodes := make([]*html.Node, 0)
+	nodes = append(nodes, n)
+
+	for len(nodes) > 0 {
+		n = nodes[0]
+		nodes = nodes[1:]
+
+		if pre != nil {
+			if !pre(n) {
+				return n
+			}
+		}
+
+		for c := n.FirstChild; c != nil; c = c.NextSibling {
+			nodes = append(nodes, c)
+		}
+
+		if post != nil {
+			if !post(n) {
+				return n
+			}
+		}
+	}
+
+	return nil
 }
