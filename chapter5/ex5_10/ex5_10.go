@@ -1,9 +1,10 @@
-// prereqs maps computer science courses to their prerequisites.
+// Exercise 5.10: Rewrite topoSort to use maps instead of slices and
+// eliminate the initial sort. Verify that the results, though nondeterministic,
+// are valid topological orderings.
 package main
 
 import (
 	"fmt"
-	"sort"
 )
 
 var prereqs = map[string][]string{
@@ -46,13 +47,9 @@ func topoSort(m map[string][]string) []string {
 		}
 	}
 
-	var keys []string
 	for key := range m {
-		keys = append(keys, key)
+		visitAll([]string{key})
 	}
-
-	sort.Strings(keys)
-	visitAll(keys)
 
 	return order
 }
