@@ -67,6 +67,20 @@ func topoSort(m map[string][]string) ([]string, error) {
 }
 
 func detectCircle(key string, path []string, m map[string][]string) ([]string, bool) {
-	// Implementation
+	for i, node := range path {
+		if node == key {
+			cyclePath := append(path[i:], key)
+			return cyclePath, true
+		}
+	}
+
+	newPath := append(path, key)
+
+	for _, prereq := range m[key] {
+		if cyclePath, ok := detectCircle(prereq, newPath, m); ok {
+			return cyclePath, ok
+		}
+	}
+
 	return nil, false
 }
