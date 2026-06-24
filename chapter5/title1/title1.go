@@ -3,13 +3,20 @@ package main
 import (
 	"fmt"
 	"net/http"
+	"os"
 	"strings"
 
 	"golang.org/x/net/html"
 )
 
 func main() {
-	//
+	url := "https://lessgo.ru"
+
+	err := title(url)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Failed: %v\n", err)
+		os.Exit(1)
+	}
 }
 
 func title(url string) error {
@@ -17,6 +24,7 @@ func title(url string) error {
 	if err != nil {
 		return err
 	}
+	defer resp.Body.Close()
 
 	// Check Content-Type is HTML (e.g., "text/html; charset=utf-8").
 	ct := resp.Header.Get("Content-Type")
