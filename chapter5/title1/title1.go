@@ -24,11 +24,11 @@ func title(url string) error {
 	if err != nil {
 		return err
 	}
-	defer resp.Body.Close()
 
 	// Check Content-Type is HTML (e.g., "text/html; charset=utf-8").
 	ct := resp.Header.Get("Content-Type")
 	if ct != "text/html" && !strings.HasPrefix(ct, "text/html;") {
+		resp.Body.Close()
 		return fmt.Errorf("%s has type %s, not text/html", url, ct)
 	}
 
