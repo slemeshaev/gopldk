@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="ru-RU">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <meta name='robots' content='index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1' />
+
+	<title>Go-блог Станислава Лемешаева - Разбор задач, фишки языка и личный опыт</title>
+	<meta name="description" content="Разбор задач, фишки языка и личный опыт" />
+	<link rel="canonical" href="https://lessgo.ru/" />
+	<meta property="og:locale" content="ru_RU" />
+	<meta property="og:type" content="website" />
+	<meta property="og:title" content="Go-блог Станислава Лемешаева" />
+	<meta property="og:description" content="Разбор задач, фишки языка и личный опыт" />
+	<meta property="og:url" content="https://lessgo.ru/" />
+	<meta property="og:site_name" content="Go-блог Станислава Лемешаева" />
+	<meta name="twitter:card" content="summary_large_image" />
+	<script type="application/ld+json" class="yoast-schema-graph">{"@context":"https:\/\/schema.org","@graph":[{"@type":"CollectionPage","@id":"https:\/\/lessgo.ru\/","url":"https:\/\/lessgo.ru\/","name":"Go-блог Станислава Лемешаева - Разбор задач, фишки языка и личный опыт","isPartOf":{"@id":"https:\/\/lessgo.ru\/#website"},"about":{"@id":"https:\/\/lessgo.ru\/#\/schema\/person\/6a0b9541a3bbd43ecf2b549f768fac07"},"description":"Разбор задач, фишки языка и личный опыт","breadcrumb":{"@id":"https:\/\/lessgo.ru\/#breadcrumb"},"inLanguage":"ru-RU"},{"@type":"BreadcrumbList","@id":"https:\/\/lessgo.ru\/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"Главная"}]},{"@type":"WebSite","@id":"https:\/\/lessgo.ru\/#website","url":"https:\/\/lessgo.ru\/","name":"Go-блог Станислава Лемешаева","description":"Разбор задач, фишки языка и личный опыт","publisher":{"@id":"https:\/\/lessgo.ru\/#\/schema\/person\/6a0b9541a3bbd43ecf2b549f768fac07"},"alternateName":"Язык программирования Go","potentialAction":[{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https:\/\/lessgo.ru\/?s={search_term_string}"},"query-input":{"@type":"PropertyValueSpecification","valueRequired":true,"valueName":"search_term_string"}}],"inLanguage":"ru-RU"},{"@type":["Person","Organization"],"@id":"https:\/\/lessgo.ru\/#\/schema\/person\/6a0b9541a3bbd43ecf2b549f768fac07","name":"Станислав Лемешаев","image":{"@type":"ImageObject","inLanguage":"ru-RU","@id":"https:\/\/lessgo.ru\/wp-content\/uploads\/2025\/11\/slemeshaev.png","url":"https:\/\/lessgo.ru\/wp-content\/uploads\/2025\/11\/slemeshaev.png","contentUrl":"https:\/\/lessgo.ru\/wp-content\/uploads\/2025\/11\/slemeshaev.png","width":900,"height":1200,"caption":"Станислав Лемешаев"},"logo":{"@id":"https:\/\/lessgo.ru\/wp-content\/uploads\/2025\/11\/slemeshaev.png"},"sameAs":["http:\/\/lessgo.ru\/"]}]}</script>
+
+
+<link rel='dns-prefetch' href='//fonts.googleapis.com' />
+<style id="wp-img-auto-sizes-contain-inline-css">
+img:is([sizes=auto i],[sizes^="auto," i]){contain-intrinsic-size:3000px 1500px}
+/*# sourceURL=wp-img-auto-sizes-contain-inline-css */
+</style>
+<style id="wp-block-library-inline-css">
+:root{--wp-block-synced-color:#7a00df;--wp-block-synced-color--rgb:122,0,223;--wp-bound-block-color:var(--wp-block-synced-color);--wp-editor-canvas-background:#ddd;--wp-admin-theme-color:#007cba;--wp-admin-theme-color--rgb:0,124,186;--wp-admin-theme-color-darker-10:#006ba1;--wp-admin-theme-color-darker-10--rgb:0,107,160.5;--wp-admin-theme-color-darker-20:#005a87;--wp-admin-theme-color-darker-20--rgb:0,90,135;--wp-admin-border-width-focus:2px}@media (min-resolution:192dpi){:root{--wp-admin-border-width-focus:1.5px}}.wp-element-button{cursor:pointer}:root .has-very-light-gray-background-color{background-color:#eee}:root .has-very-dark-gray-background-color{background-color:#313131}:root .has-very-light-gray-color{color:#eee}:root .has-very-dark-gray-color{color:#313131}:root .has-vivid-green-cyan-to-vivid-cyan-blue-gradient-background{background:linear-gradient(135deg,#00d084,#0693e3)}:root .has-purple-crush-gradient-background{background:linear-gradient(135deg,#34e2e4,#4721fb 50%,#ab1dfe)}:root .has-hazy-dawn-gradient-background{background:linear-gradient(135deg,#faaca8,#dad0ec)}:root .has-subdued-olive-gradient-background{background:linear-gradient(135deg,#fafae1,#67a671)}:root .has-atomic-cream-gradient-background{background:linear-gradient(135deg,#fdd79a,#004a59)}:root .has-nightshade-gradient-background{background:linear-gradient(135deg,#330968,#31cdcf)}:root .has-midnight-gradient-background{background:linear-gradient(135deg,#020381,#2874fc)}:root{--wp--preset--font-size--normal:16px;--wp--preset--font-size--huge:42px}.has-regular-font-size{font-size:1em}.has-larger-font-size{font-size:2.625em}.has-normal-font-size{font-size:var(--wp--preset--font-size--normal)}.has-huge-font-size{font-size:var(--wp--preset--font-size--huge)}:root .has-text-align-center{text-align:center}:root .has-text-align-left{text-align:left}:root .has-text-align-right{text-align:right}.has-fit-text{white-space:nowrap!important}#end-resizable-editor-section{display:none}.aligncenter{clear:both}.items-justified-left{justify-content:flex-start}.items-justified-center{justify-content:center}.items-justified-right{justify-content:flex-end}.items-justified-space-between{justify-content:space-between}.screen-reader-text{word-wrap:normal!important;border:0;clip-path:inset(50%);height:1px;margin:-1px;overflow:hidden;padding:0;position:absolute;width:1px}.screen-reader-text:focus{background-color:#ddd;clip-path:none;color:#444;display:block;font-size:1em;height:auto;left:5px;line-height:normal;padding:15px 23px 14px;text-decoration:none;top:5px;width:auto;z-index:100000}html :where(.has-border-color){border-style:solid}html :where([style*=border-color]){border-style:solid}html :where([style*=border-top-color]){border-top-style:solid}html :where([style*=border-right-color]){border-right-style:solid}html :where([style*=border-bottom-color]){border-bottom-style:solid}html :where([style*=border-left-color]){border-left-style:solid}html :where([style*=border-width]){border-style:solid}html :where([style*=border-top-width]){border-top-style:solid}html :where([style*=border-right-width]){border-right-style:solid}html :where([style*=border-bottom-width]){border-bottom-style:solid}html :where([style*=border-left-width]){border-left-style:solid}html :where(img[class*=wp-image-]){height:auto;max-width:100%}:where(figure){margin:0 0 1em}html :where(.is-position-sticky){--wp-admin--admin-bar--position-offset:var(--wp-admin--admin-bar--height,0px)}@media screen and (max-width:600px){html :where(.is-position-sticky){--wp-admin--admin-bar--position-offset:0px}}
+
+/*# sourceURL=/wp-includes/css/dist/block-library/common.min.css */
+</style>
+<style id="wp-block-categories-inline-css">
+.wp-block-categories{box-sizing:border-box}.wp-block-categories.alignleft{margin-right:2em}.wp-block-categories.alignright{margin-left:2em}.wp-block-categories.wp-block-categories-dropdown.aligncenter{text-align:center}.wp-block-categories .wp-block-categories__label:not(.screen-reader-text){display:block;width:100%}
+/*# sourceURL=https://lessgo.ru/wp-includes/blocks/categories/style.min.css */
+</style>
+<style id="wp-block-heading-inline-css">
+h1:where(.wp-block-heading).has-background,h2:where(.wp-block-heading).has-background,h3:where(.wp-block-heading).has-background,h4:where(.wp-block-heading).has-background,h5:where(.wp-block-heading).has-background,h6:where(.wp-block-heading).has-background{padding:1.25em 2.375em}h1.has-text-align-left[style*=writing-mode]:where([style*=vertical-lr]),h1.has-text-align-right[style*=writing-mode]:where([style*=vertical-rl]),h2.has-text-align-left[style*=writing-mode]:where([style*=vertical-lr]),h2.has-text-align-right[style*=writing-mode]:where([style*=vertical-rl]),h3.has-text-align-left[style*=writing-mode]:where([style*=vertical-lr]),h3.has-text-align-right[style*=writing-mode]:where([style*=vertical-rl]),h4.has-text-align-left[style*=writing-mode]:where([style*=vertical-lr]),h4.has-text-align-right[style*=writing-mode]:where([style*=vertical-rl]),h5.has-text-align-left[style*=writing-mode]:where([style*=vertical-lr]),h5.has-text-align-right[style*=writing-mode]:where([style*=vertical-rl]),h6.has-text-align-left[style*=writing-mode]:where([style*=vertical-lr]),h6.has-text-align-right[style*=writing-mode]:where([style*=vertical-rl]){rotate:180deg}
+/*# sourceURL=https://lessgo.ru/wp-includes/blocks/heading/style.min.css */
+</style>
+<style id="wp-block-search-inline-css">
+.wp-block-search__button{margin-left:10px;word-break:normal}.wp-block-search__button.has-icon{line-height:0}.wp-block-search__button svg{fill:currentColor;height:1.25em;min-height:24px;min-width:24px;vertical-align:text-bottom;width:1.25em}:where(.wp-block-search__button){border:1px solid #ccc;padding:6px 10px}.wp-block-search__inside-wrapper{display:flex;flex:auto;flex-wrap:nowrap;max-width:100%}.wp-block-search__label{width:100%}.wp-block-search.wp-block-search__button-only .wp-block-search__button{box-sizing:border-box;display:flex;flex-shrink:0;justify-content:center;margin-left:0;max-width:100%}.wp-block-search.wp-block-search__button-only .wp-block-search__inside-wrapper{min-width:0!important;transition-property:width}.wp-block-search.wp-block-search__button-only .wp-block-search__input{flex-basis:100%;transition-duration:.3s}.wp-block-search.wp-block-search__button-only.wp-block-search__searchfield-hidden,.wp-block-search.wp-block-search__button-only.wp-block-search__searchfield-hidden .wp-block-search__inside-wrapper{overflow:hidden}.wp-block-search.wp-block-search__button-only.wp-block-search__searchfield-hidden .wp-block-search__input{border-left-width:0!important;border-right-width:0!important;flex-basis:0;flex-grow:0;margin:0;min-width:0!important;padding-left:0!important;padding-right:0!important;width:0!important}:where(.wp-block-search__input){appearance:none;border:1px solid #949494;flex-grow:1;font-family:inherit;font-size:inherit;font-style:inherit;font-weight:inherit;letter-spacing:inherit;line-height:inherit;margin-left:0;margin-right:0;min-width:3rem;padding:8px;text-decoration:unset!important;text-transform:inherit}:where(.wp-block-search__button-inside .wp-block-search__inside-wrapper){background-color:#fff;border:1px solid #949494;box-sizing:border-box;padding:4px}:where(.wp-block-search__button-inside .wp-block-search__inside-wrapper) .wp-block-search__input{border:none;border-radius:0;padding:0 4px}:where(.wp-block-search__button-inside .wp-block-search__inside-wrapper) .wp-block-search__input:focus{outline:none}:where(.wp-block-search__button-inside .wp-block-search__inside-wrapper) :where(.wp-block-search__button){padding:4px 8px}.wp-block-search.aligncenter .wp-block-search__inside-wrapper{margin:auto}.wp-block[data-align=right] .wp-block-search.wp-block-search__button-only .wp-block-search__inside-wrapper{float:right}
+/*# sourceURL=https://lessgo.ru/wp-includes/blocks/search/style.min.css */
+</style>
+<style id="wp-block-group-inline-css">
+.wp-block-group{box-sizing:border-box}:where(.wp-block-group.wp-block-group-is-layout-constrained){position:relative}
+/*# sourceURL=https://lessgo.ru/wp-includes/blocks/group/style.min.css */
+</style>
+
+<style id="classic-theme-styles-inline-css">
+/*! This file is auto-generated */
+.wp-block-button__link{color:#fff;background-color:#32373c;border-radius:9999px;box-shadow:none;text-decoration:none;padding:calc(.667em + 2px) calc(1.333em + 2px);font-size:1.125em}.wp-block-file__button{background:#32373c;color:#fff;text-decoration:none}
+/*# sourceURL=/wp-includes/css/classic-themes.min.css */
+</style>
+
+<style id="global-styles-inline-css">
+:root{--wp--preset--aspect-ratio--square: 1;--wp--preset--aspect-ratio--4-3: 4/3;--wp--preset--aspect-ratio--3-4: 3/4;--wp--preset--aspect-ratio--3-2: 3/2;--wp--preset--aspect-ratio--2-3: 2/3;--wp--preset--aspect-ratio--16-9: 16/9;--wp--preset--aspect-ratio--9-16: 9/16;--wp--preset--color--black: #000000;--wp--preset--color--cyan-bluish-gray: #abb8c3;--wp--preset--color--white: #ffffff;--wp--preset--color--pale-pink: #f78da7;--wp--preset--color--vivid-red: #cf2e2e;--wp--preset--color--luminous-vivid-orange: #ff6900;--wp--preset--color--luminous-vivid-amber: #fcb900;--wp--preset--color--light-green-cyan: #7bdcb5;--wp--preset--color--vivid-green-cyan: #00d084;--wp--preset--color--pale-cyan-blue: #8ed1fc;--wp--preset--color--vivid-cyan-blue: #0693e3;--wp--preset--color--vivid-purple: #9b51e0;--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple: linear-gradient(135deg,rgb(6,147,227) 0%,rgb(155,81,224) 100%);--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan: linear-gradient(135deg,rgb(122,220,180) 0%,rgb(0,208,130) 100%);--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange: linear-gradient(135deg,rgb(252,185,0) 0%,rgb(255,105,0) 100%);--wp--preset--gradient--luminous-vivid-orange-to-vivid-red: linear-gradient(135deg,rgb(255,105,0) 0%,rgb(207,46,46) 100%);--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray: linear-gradient(135deg,rgb(238,238,238) 0%,rgb(169,184,195) 100%);--wp--preset--gradient--cool-to-warm-spectrum: linear-gradient(135deg,rgb(74,234,220) 0%,rgb(151,120,209) 20%,rgb(207,42,186) 40%,rgb(238,44,130) 60%,rgb(251,105,98) 80%,rgb(254,248,76) 100%);--wp--preset--gradient--blush-light-purple: linear-gradient(135deg,rgb(255,206,236) 0%,rgb(152,150,240) 100%);--wp--preset--gradient--blush-bordeaux: linear-gradient(135deg,rgb(254,205,165) 0%,rgb(254,45,45) 50%,rgb(107,0,62) 100%);--wp--preset--gradient--luminous-dusk: linear-gradient(135deg,rgb(255,203,112) 0%,rgb(199,81,192) 50%,rgb(65,88,208) 100%);--wp--preset--gradient--pale-ocean: linear-gradient(135deg,rgb(255,245,203) 0%,rgb(182,227,212) 50%,rgb(51,167,181) 100%);--wp--preset--gradient--electric-grass: linear-gradient(135deg,rgb(202,248,128) 0%,rgb(113,206,126) 100%);--wp--preset--gradient--midnight: linear-gradient(135deg,rgb(2,3,129) 0%,rgb(40,116,252) 100%);--wp--preset--font-size--small: 13px;--wp--preset--font-size--medium: 20px;--wp--preset--font-size--large: 36px;--wp--preset--font-size--x-large: 42px;--wp--preset--spacing--20: 0.44rem;--wp--preset--spacing--30: 0.67rem;--wp--preset--spacing--40: 1rem;--wp--preset--spacing--50: 1.5rem;--wp--preset--spacing--60: 2.25rem;--wp--preset--spacing--70: 3.38rem;--wp--preset--spacing--80: 5.06rem;--wp--preset--shadow--natural: 6px 6px 9px rgba(0, 0, 0, 0.2);--wp--preset--shadow--deep: 12px 12px 50px rgba(0, 0, 0, 0.4);--wp--preset--shadow--sharp: 6px 6px 0px rgba(0, 0, 0, 0.2);--wp--preset--shadow--outlined: 6px 6px 0px -3px rgb(255, 255, 255), 6px 6px rgb(0, 0, 0);--wp--preset--shadow--crisp: 6px 6px 0px rgb(0, 0, 0);}:where(body) { margin: 0; }:where(.is-layout-flex){gap: 0.5em;}:where(.is-layout-grid){gap: 0.5em;}body .is-layout-flex{display: flex;}.is-layout-flex{flex-wrap: wrap;align-items: center;}.is-layout-flex > :is(*, div){margin: 0;}body .is-layout-grid{display: grid;}.is-layout-grid > :is(*, div){margin: 0;}body{padding-top: 0px;padding-right: 0px;padding-bottom: 0px;padding-left: 0px;}:root :where(.wp-element-button, .wp-block-button__link){background-color: #32373c;border-width: 0;color: #fff;font-family: inherit;font-size: inherit;font-style: inherit;font-weight: inherit;letter-spacing: inherit;line-height: inherit;padding-top: calc(0.667em + 2px);padding-right: calc(1.333em + 2px);padding-bottom: calc(0.667em + 2px);padding-left: calc(1.333em + 2px);text-decoration: none;text-transform: inherit;}.has-black-color{color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-color{color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-color{color: var(--wp--preset--color--white) !important;}.has-pale-pink-color{color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-color{color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-color{color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-color{color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-color{color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-color{color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-color{color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-color{color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-color{color: var(--wp--preset--color--vivid-purple) !important;}.has-black-background-color{background-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-background-color{background-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-background-color{background-color: var(--wp--preset--color--white) !important;}.has-pale-pink-background-color{background-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-background-color{background-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-background-color{background-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-background-color{background-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-background-color{background-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-background-color{background-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-background-color{background-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-background-color{background-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-background-color{background-color: var(--wp--preset--color--vivid-purple) !important;}.has-black-border-color{border-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-border-color{border-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-border-color{border-color: var(--wp--preset--color--white) !important;}.has-pale-pink-border-color{border-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-border-color{border-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-border-color{border-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-border-color{border-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-border-color{border-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-border-color{border-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-border-color{border-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-border-color{border-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-border-color{border-color: var(--wp--preset--color--vivid-purple) !important;}.has-vivid-cyan-blue-to-vivid-purple-gradient-background{background: var(--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple) !important;}.has-light-green-cyan-to-vivid-green-cyan-gradient-background{background: var(--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan) !important;}.has-luminous-vivid-amber-to-luminous-vivid-orange-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange) !important;}.has-luminous-vivid-orange-to-vivid-red-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-orange-to-vivid-red) !important;}.has-very-light-gray-to-cyan-bluish-gray-gradient-background{background: var(--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray) !important;}.has-cool-to-warm-spectrum-gradient-background{background: var(--wp--preset--gradient--cool-to-warm-spectrum) !important;}.has-blush-light-purple-gradient-background{background: var(--wp--preset--gradient--blush-light-purple) !important;}.has-blush-bordeaux-gradient-background{background: var(--wp--preset--gradient--blush-bordeaux) !important;}.has-luminous-dusk-gradient-background{background: var(--wp--preset--gradient--luminous-dusk) !important;}.has-pale-ocean-gradient-background{background: var(--wp--preset--gradient--pale-ocean) !important;}.has-electric-grass-gradient-background{background: var(--wp--preset--gradient--electric-grass) !important;}.has-midnight-gradient-background{background: var(--wp--preset--gradient--midnight) !important;}.has-small-font-size{font-size: var(--wp--preset--font-size--small) !important;}.has-medium-font-size{font-size: var(--wp--preset--font-size--medium) !important;}.has-large-font-size{font-size: var(--wp--preset--font-size--large) !important;}.has-x-large-font-size{font-size: var(--wp--preset--font-size--x-large) !important;}
+/*# sourceURL=global-styles-inline-css */
+</style>
+
+<link rel='stylesheet' id='responsive-lightbox-nivo-css' href='https://lessgo.ru/wp-content/plugins/responsive-lightbox/assets/nivo/nivo-lightbox.min.css?ver=54acb57afb70' media='all' />
+<link rel='stylesheet' id='responsive-lightbox-nivo-default-css' href='https://lessgo.ru/wp-content/plugins/responsive-lightbox/assets/nivo/themes/default/default.css?ver=54acb57afb70' media='all' />
+<link rel='stylesheet' id='responsive-lightbox-gallery-css' href='https://lessgo.ru/wp-content/plugins/responsive-lightbox/css/gallery.css?ver=eb17f9b3fafd' media='all' />
+<link rel='stylesheet' id='responsive-lightbox-basicgrid-gallery-css' href='https://lessgo.ru/wp-content/plugins/responsive-lightbox/css/gallery-basicgrid.css?ver=eb17f9b3fafd' media='all' />
+<link rel='stylesheet' id='responsive-lightbox-basicslider-gallery-css' href='https://lessgo.ru/wp-content/plugins/responsive-lightbox/assets/splide/splide.min.css?ver=a8ae891fee3f' media='all' />
+<link rel='stylesheet' id='responsive-lightbox-basicmasonry-gallery-css' href='https://lessgo.ru/wp-content/plugins/responsive-lightbox/css/gallery-basicmasonry.css?ver=eb17f9b3fafd' media='all' />
+<link rel='stylesheet' id='google-fonts-css' href='https://fonts.googleapis.com/css?family=Roboto%3A400%2C400i%2C700&#038;subset=cyrillic&#038;display=swap&#038;ver=01deebfa87b9' media='all' />
+<link rel='stylesheet' id='root-style-css' href='https://lessgo.ru/wp-content/themes/root/assets/css/style.min.css?ver=1e4966dd2df8' media='all' />
+<script id="jquery-core-js" src="https://lessgo.ru/wp-includes/js/jquery/jquery.min.js?ver=8a0c4faa9771"></script>
+<script id="jquery-migrate-js" src="https://lessgo.ru/wp-includes/js/jquery/jquery-migrate.min.js?ver=83e266cb1712"></script>
+<style>.site-logotype {max-width:1000px}.site-logotype img {max-height:100px}@media (max-width: 991px) {.mob-search{display:block;margin-bottom:25px} }.scrolltop {background-color:#cccccc}.scrolltop:after {color:#ffffff}.scrolltop {width:50px}.scrolltop {height:50px}.scrolltop:after {content:"\f102"}.entry-image:not(.entry-image--big) {margin-left:-20px}@media (min-width: 1200px) {.entry-image:not(.entry-image--big) {margin-left:-40px} }body {font-family:"Roboto" ,"Helvetica Neue", Helvetica, Arial, sans-serif}@media (min-width: 576px) {body {font-size:16px} }@media (min-width: 576px) {body {line-height:1.5} }.site-title, .site-title a {font-family:"Roboto" ,"Helvetica Neue", Helvetica, Arial, sans-serif}@media (min-width: 576px) {.site-title, .site-title a {font-size:28px} }@media (min-width: 576px) {.site-title, .site-title a {line-height:1.1} }.site-description {font-family:"Roboto" ,"Helvetica Neue", Helvetica, Arial, sans-serif}@media (min-width: 576px) {.site-description {font-size:16px} }@media (min-width: 576px) {.site-description {line-height:1.5} }.top-menu {font-family:"Roboto" ,"Helvetica Neue", Helvetica, Arial, sans-serif}@media (min-width: 576px) {.top-menu {font-size:16px} }@media (min-width: 576px) {.top-menu {line-height:1.5} }.main-navigation ul li a, .main-navigation ul li .removed-link, .footer-navigation ul li a, .footer-navigation ul li .removed-link{font-family:"Roboto" ,"Helvetica Neue", Helvetica, Arial, sans-serif}@media (min-width: 576px) {.main-navigation ul li a, .main-navigation ul li .removed-link, .footer-navigation ul li a, .footer-navigation ul li .removed-link {font-size: 16px} }@media (min-width: 576px) {.main-navigation ul li a, .main-navigation ul li .removed-link, .footer-navigation ul li a, .footer-navigation ul li .removed-link {line-height:1.5} }.h1, h1:not(.site-title) {font-weight:bold;}.h2, h2 {font-weight:bold;}.h3, h3 {font-weight:bold;}.h4, h4 {font-weight:bold;}.h5, h5 {font-weight:bold;}.h6, h6 {font-weight:bold;}.mob-hamburger span, .card-slider__category, .card-slider-container .swiper-pagination-bullet-active, .page-separator, .pagination .current, .pagination a.page-numbers:hover, .entry-content ul > li:before, .entry-content ul:not([class])>li:before, .entry-content ul.wp-block-list>li:before, .home-text ul:not([class])>li:before, .home-text ul.wp-block-list>li:before, .taxonomy-description ul:not([class])>li:before, .taxonomy-description ul.wp-block-list>li:before, .btn, .comment-respond .form-submit input, .contact-form .contact_submit, .page-links__item {background-color:#5a80b1}.spoiler-box, .entry-content ol li:before, .entry-content ol:not([class]) li:before, .entry-content ol.wp-block-list li:before, .home-text ol:not([class]) li:before, .home-text ol.wp-block-list li:before, .taxonomy-description ol:not([class]) li:before, .taxonomy-description ol.wp-block-list li:before, .mob-hamburger, .inp:focus, .search-form__text:focus, .entry-content blockquote:not(.wpremark),
+         .comment-respond .comment-form-author input:focus, .comment-respond .comment-form-author textarea:focus, .comment-respond .comment-form-comment input:focus, .comment-respond .comment-form-comment textarea:focus, .comment-respond .comment-form-email input:focus, .comment-respond .comment-form-email textarea:focus, .comment-respond .comment-form-url input:focus, .comment-respond .comment-form-url textarea:focus {border-color:#5a80b1}.entry-content blockquote:before, .spoiler-box__title:after, .sidebar-navigation .menu-item-has-children:after,
+        .star-rating--score-1:not(.hover) .star-rating-item:nth-child(1),
+        .star-rating--score-2:not(.hover) .star-rating-item:nth-child(1), .star-rating--score-2:not(.hover) .star-rating-item:nth-child(2),
+        .star-rating--score-3:not(.hover) .star-rating-item:nth-child(1), .star-rating--score-3:not(.hover) .star-rating-item:nth-child(2), .star-rating--score-3:not(.hover) .star-rating-item:nth-child(3),
+        .star-rating--score-4:not(.hover) .star-rating-item:nth-child(1), .star-rating--score-4:not(.hover) .star-rating-item:nth-child(2), .star-rating--score-4:not(.hover) .star-rating-item:nth-child(3), .star-rating--score-4:not(.hover) .star-rating-item:nth-child(4),
+        .star-rating--score-5:not(.hover) .star-rating-item:nth-child(1), .star-rating--score-5:not(.hover) .star-rating-item:nth-child(2), .star-rating--score-5:not(.hover) .star-rating-item:nth-child(3), .star-rating--score-5:not(.hover) .star-rating-item:nth-child(4), .star-rating--score-5:not(.hover) .star-rating-item:nth-child(5), .star-rating-item.hover {color:#5a80b1}body {color:#333333}a, .spanlink, .comment-reply-link, .pseudo-link, .root-pseudo-link {color:#428bca}a:hover, a:focus, a:active, .spanlink:hover, .comment-reply-link:hover, .pseudo-link:hover {color:#e66212}.site-header {background-color:#ffffff}.site-header {color:#333333}.site-title, .site-title a {color:#5a80b1}.site-description, .site-description a {color:#666666}.top-menu ul li a {color:#333333}.main-navigation, .footer-navigation, .main-navigation ul li .sub-menu, .footer-navigation ul li .sub-menu {background-color:#5a80b1}.main-navigation ul li a, .main-navigation ul li .removed-link, .footer-navigation ul li a, .footer-navigation ul li .removed-link {color:#ffffff}.site-content {background-color:#ffffff}.site-footer {background-color:#ffffff}.site-footer {color:#333333}</style><link rel="prefetch" href="https://lessgo.ru/wp-content/themes/root/fonts/fontawesome-webfont.ttf" as="font" crossorigin><link rel="icon" href="https://lessgo.ru/wp-content/uploads/2025/11/cropped-blue-gopher-32x32.png" sizes="32x32" />
+<link rel="icon" href="https://lessgo.ru/wp-content/uploads/2025/11/cropped-blue-gopher-192x192.png" sizes="192x192" />
+<link rel="apple-touch-icon" href="https://lessgo.ru/wp-content/uploads/2025/11/cropped-blue-gopher-180x180.png" />
+<meta name="msapplication-TileImage" content="https://lessgo.ru/wp-content/uploads/2025/11/cropped-blue-gopher-270x270.png" />
+    </head>
+
+<body class="home blog wp-theme-root ">
+
+
+
+<div id="page" class="site">
+    <a class="skip-link screen-reader-text" href="#main"><!--noindex-->Перейти к контенту<!--/noindex--></a>
+
+    
+
+<header id="masthead" class="site-header container" itemscope itemtype="http://schema.org/WPHeader">
+    <div class="site-header-inner ">
+        <div class="site-branding">
+            
+                            <div class="site-branding-container">
+
+                    <h1 class="site-title">Go-блог Станислава Лемешаева</h1>
+                                            <p class="site-description">Разбор задач, фишки языка и личный опыт</p>
+                    
+                </div>
+                    </div><!-- .site-branding -->
+
+        
+        
+<div class="social-links">
+    <div class="social-buttons social-buttons--square social-buttons--circle social-buttons--small">
+
+    <span class="social-button social-button__vk js-link" data-href="aHR0cHM6Ly92ay5jb20vbHNzZ28=" data-target="_blank"></span><span class="social-button social-button__telegram js-link" data-href="aHR0cHM6Ly90Lm1lL2xzc2dv" data-target="_blank"></span><span class="social-button social-button__github js-link" data-href="aHR0cHM6Ly9naXRodWIuY29tL3NsZW1lc2hhZXY=" data-target="_blank"></span>
+    </div>
+</div>
+
+
+        
+        
+        <div class="mob-hamburger"><span></span></div>
+
+                    <div class="mob-search">
+<form role="search" method="get" id="searchform_3068" action="https://lessgo.ru/" class="search-form">
+    <label class="screen-reader-text" for="s_3068"><!--noindex-->Поиск: <!--/noindex--></label>
+    <input type="text" value="" name="s" id="s_3068" class="search-form__text">
+    <button type="submit" id="searchsubmit_3068" class="search-form__submit"></button>
+</form></div>
+            </div><!--.site-header-inner-->
+</header><!-- #masthead -->
+
+
+
+    
+    
+    <nav id="site-navigation" class="main-navigation container" itemscope itemtype="http://schema.org/SiteNavigationElement">
+        <div class="main-navigation-inner ">
+            <div class="menu-glavnoe-menyu-container"><ul id="header_menu" class="menu"><li id="menu-item-24" class="menu-item menu-item-type-custom menu-item-object-custom current-menu-item current_page_item menu-item-home menu-item-24"><span class="removed-link">Главная</span></li>
+<li id="menu-item-25" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-25"><a href="https://lessgo.ru/about">Об авторе</a></li>
+<li id="menu-item-158" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-158"><a href="https://lessgo.ru/contacts">Контакты</a></li>
+</ul></div>        </div><!--.main-navigation-inner-->
+    </nav><!-- #site-navigation -->
+
+    
+
+    
+    
+	<div id="content" class="site-content container">
+
+        
+	<div id="primary" class="content-area">
+		<main id="main" class="site-main">
+
+		
+			
+            
+            
+            
+            
+<div class="posts-container">
+
+    
+<div id="post-691" class="post-box post-691 post type-post status-publish format-standard has-post-thumbnail  category-interesnoe" itemscope itemtype="http://schema.org/BlogPosting">
+	<header class="entry-header"><div class="entry-title" itemprop="name"><span itemprop="headline"><a href="https://lessgo.ru/interesnoe/moj-otpusk-2026-doroga-gory-i-more.html">Мой отпуск &#8212; 2026: дорога, горы и море</a></span></div><div class="entry-meta"><span class="entry-date"><time itemprop="datePublished" datetime="2026-06-28">28.06.2026</time></span><span class="entry-category"><span class="hidden-xs">Рубрика:</span> <a href="https://lessgo.ru/category/interesnoe" itemprop="articleSection">Интересное</a></span><span class="entry-author"><span class="hidden-xs">Автор:</span> <span itemprop="author">Станислав Лемешаев</span></span><span class="entry-meta__info"><span class="entry-meta__comments" title="Комментарии"><span class="fa fa-comment-o"></span> 0</span></span></div></header><div class="entry-image"><a href="https://lessgo.ru/interesnoe/moj-otpusk-2026-doroga-gory-i-more.html"><img width="770" height="330" src="https://lessgo.ru/wp-content/uploads/2026/06/moj-otpusk-2026-doroga-gory-i-more.jpg" class="attachment-thumb-big size-thumb-big wp-post-image" alt="мой-отпуск-2026-дорога-горы-и-море" itemprop="image" decoding="async" fetchpriority="high" srcset="https://lessgo.ru/wp-content/uploads/2026/06/moj-otpusk-2026-doroga-gory-i-more.jpg 770w, https://lessgo.ru/wp-content/uploads/2026/06/moj-otpusk-2026-doroga-gory-i-more-300x129.jpg 300w, https://lessgo.ru/wp-content/uploads/2026/06/moj-otpusk-2026-doroga-gory-i-more-768x329.jpg 768w, https://lessgo.ru/wp-content/uploads/2026/06/moj-otpusk-2026-doroga-gory-i-more-330x140.jpg 330w" sizes="(max-width: 770px) 100vw, 770px" /></a></div><div class="post-box__content" itemprop="articleBody">Этим летом я выбрал самый свободный формат отдыха &#8212; путешествие на машине. Никакой спешки, только маршрут, дорога и места, которые хочется увидеть. И, конечно, без приключений не обошлось</div><footer class="post-box__footer"><a href="https://lessgo.ru/interesnoe/moj-otpusk-2026-doroga-gory-i-more.html" class="entry-footer__more">Читать полностью</a></footer>
+            	<meta itemscope itemprop="mainEntityOfPage" itemType="https://schema.org/WebPage" itemid="https://lessgo.ru/interesnoe/moj-otpusk-2026-doroga-gory-i-more.html" content="Мой отпуск &#8212; 2026: дорога, горы и море">
+	<meta itemprop="dateModified" content="2026-06-28">
+    <div itemprop="publisher" itemscope itemtype="https://schema.org/Organization" style="display: none;"><meta itemprop="name" content="Go-блог Станислава Лемешаева"><meta itemprop="telephone" content="Go-блог Станислава Лемешаева"><meta itemprop="address" content="https://lessgo.ru"></div>
+    
+</div>
+<div id="post-672" class="post-box post-672 post type-post status-publish format-standard has-post-thumbnail  category-algorithms" itemscope itemtype="http://schema.org/BlogPosting">
+	<header class="entry-header"><div class="entry-title" itemprop="name"><span itemprop="headline"><a href="https://lessgo.ru/algorithms/rekursiya-v-go-kak-rabotaet-i-kogda-ispolzovat-iteraczii.html">Рекурсия в Go: как работает и когда лучше использовать итерации</a></span></div><div class="entry-meta"><span class="entry-date"><time itemprop="datePublished" datetime="2026-06-15">15.06.2026</time></span><span class="entry-category"><span class="hidden-xs">Рубрика:</span> <a href="https://lessgo.ru/category/algorithms" itemprop="articleSection">Алгоритмы</a></span><span class="entry-author"><span class="hidden-xs">Автор:</span> <span itemprop="author">Станислав Лемешаев</span></span><span class="entry-meta__info"><span class="entry-meta__comments" title="Комментарии"><span class="fa fa-comment-o"></span> 0</span></span></div></header><div class="entry-image"><a href="https://lessgo.ru/algorithms/rekursiya-v-go-kak-rabotaet-i-kogda-ispolzovat-iteraczii.html"><img width="770" height="330" src="https://lessgo.ru/wp-content/uploads/2026/06/recursion-in-go.jpg" class="attachment-thumb-big size-thumb-big wp-post-image" alt="Рекурсия в Go" itemprop="image" decoding="async" srcset="https://lessgo.ru/wp-content/uploads/2026/06/recursion-in-go.jpg 770w, https://lessgo.ru/wp-content/uploads/2026/06/recursion-in-go-300x129.jpg 300w, https://lessgo.ru/wp-content/uploads/2026/06/recursion-in-go-768x329.jpg 768w, https://lessgo.ru/wp-content/uploads/2026/06/recursion-in-go-330x140.jpg 330w" sizes="(max-width: 770px) 100vw, 770px" /></a></div><div class="post-box__content" itemprop="articleBody">Рекурсия &#8212; это подход, при котором функция вызывает саму себя. В Go рекурсия работает, но с важными оговорками: здесь нет хвостовой оптимизации, и каждый рекурсивный вызов потребляет память</div><footer class="post-box__footer"><a href="https://lessgo.ru/algorithms/rekursiya-v-go-kak-rabotaet-i-kogda-ispolzovat-iteraczii.html" class="entry-footer__more">Читать полностью</a></footer>
+            	<meta itemscope itemprop="mainEntityOfPage" itemType="https://schema.org/WebPage" itemid="https://lessgo.ru/algorithms/rekursiya-v-go-kak-rabotaet-i-kogda-ispolzovat-iteraczii.html" content="Рекурсия в Go: как работает и когда лучше использовать итерации">
+	<meta itemprop="dateModified" content="2026-06-16">
+    <div itemprop="publisher" itemscope itemtype="https://schema.org/Organization" style="display: none;"><meta itemprop="name" content="Go-блог Станислава Лемешаева"><meta itemprop="telephone" content="Go-блог Станислава Лемешаева"><meta itemprop="address" content="https://lessgo.ru"></div>
+    
+</div>
+<div id="post-664" class="post-box post-664 post type-post status-publish format-standard has-post-thumbnail  category-algorithms" itemscope itemtype="http://schema.org/BlogPosting">
+	<header class="entry-header"><div class="entry-title" itemprop="name"><span itemprop="headline"><a href="https://lessgo.ru/algorithms/algoritm-bystroj-sortirovki-dannyh-v-go.html">Алгоритм быстрой сортировки данных в Go: принцип &#171;разделяй и властвуй&#187;</a></span></div><div class="entry-meta"><span class="entry-date"><time itemprop="datePublished" datetime="2026-05-20">20.05.2026</time></span><span class="entry-category"><span class="hidden-xs">Рубрика:</span> <a href="https://lessgo.ru/category/algorithms" itemprop="articleSection">Алгоритмы</a></span><span class="entry-author"><span class="hidden-xs">Автор:</span> <span itemprop="author">Станислав Лемешаев</span></span><span class="entry-meta__info"><span class="entry-meta__comments" title="Комментарии"><span class="fa fa-comment-o"></span> 0</span></span></div></header><div class="entry-image"><a href="https://lessgo.ru/algorithms/algoritm-bystroj-sortirovki-dannyh-v-go.html"><img width="770" height="330" src="https://lessgo.ru/wp-content/uploads/2026/05/quicksort-in-go.jpg" class="attachment-thumb-big size-thumb-big wp-post-image" alt="Алгоритм быстрой сортировки данных" itemprop="image" decoding="async" srcset="https://lessgo.ru/wp-content/uploads/2026/05/quicksort-in-go.jpg 770w, https://lessgo.ru/wp-content/uploads/2026/05/quicksort-in-go-300x129.jpg 300w, https://lessgo.ru/wp-content/uploads/2026/05/quicksort-in-go-768x329.jpg 768w, https://lessgo.ru/wp-content/uploads/2026/05/quicksort-in-go-330x140.jpg 330w" sizes="(max-width: 770px) 100vw, 770px" /></a></div><div class="post-box__content" itemprop="articleBody">Быстрая сортировка (quick sort) &#8212; один из самых эффективных алгоритмов сортировки, который используется во многих языках программирования, включая стандартную библиотеку Go. Её главная идея проста: выбрать опорный элемент,</div><footer class="post-box__footer"><a href="https://lessgo.ru/algorithms/algoritm-bystroj-sortirovki-dannyh-v-go.html" class="entry-footer__more">Читать полностью</a></footer>
+            	<meta itemscope itemprop="mainEntityOfPage" itemType="https://schema.org/WebPage" itemid="https://lessgo.ru/algorithms/algoritm-bystroj-sortirovki-dannyh-v-go.html" content="Алгоритм быстрой сортировки данных в Go: принцип &#171;разделяй и властвуй&#187;">
+	<meta itemprop="dateModified" content="2026-05-24">
+    <div itemprop="publisher" itemscope itemtype="https://schema.org/Organization" style="display: none;"><meta itemprop="name" content="Go-блог Станислава Лемешаева"><meta itemprop="telephone" content="Go-блог Станислава Лемешаева"><meta itemprop="address" content="https://lessgo.ru"></div>
+    
+</div>
+<div id="post-644" class="post-box post-644 post type-post status-publish format-standard has-post-thumbnail  category-algorithms" itemscope itemtype="http://schema.org/BlogPosting">
+	<header class="entry-header"><div class="entry-title" itemprop="name"><span itemprop="headline"><a href="https://lessgo.ru/algorithms/algoritm-puzyrkovoj-sortirovki-na-go.html">Алгоритм пузырьковой сортировки на Go</a></span></div><div class="entry-meta"><span class="entry-date"><time itemprop="datePublished" datetime="2026-05-10">10.05.2026</time></span><span class="entry-category"><span class="hidden-xs">Рубрика:</span> <a href="https://lessgo.ru/category/algorithms" itemprop="articleSection">Алгоритмы</a></span><span class="entry-author"><span class="hidden-xs">Автор:</span> <span itemprop="author">Станислав Лемешаев</span></span><span class="entry-meta__info"><span class="entry-meta__comments" title="Комментарии"><span class="fa fa-comment-o"></span> 0</span></span></div></header><div class="entry-image"><a href="https://lessgo.ru/algorithms/algoritm-puzyrkovoj-sortirovki-na-go.html"><img width="770" height="330" src="https://lessgo.ru/wp-content/uploads/2026/05/algoritm-puzyrkovoj-sortirovki.jpg" class="attachment-thumb-big size-thumb-big wp-post-image" alt="Алгоритм пузырьковой сортировки" itemprop="image" decoding="async" loading="lazy" srcset="https://lessgo.ru/wp-content/uploads/2026/05/algoritm-puzyrkovoj-sortirovki.jpg 770w, https://lessgo.ru/wp-content/uploads/2026/05/algoritm-puzyrkovoj-sortirovki-300x129.jpg 300w, https://lessgo.ru/wp-content/uploads/2026/05/algoritm-puzyrkovoj-sortirovki-768x329.jpg 768w, https://lessgo.ru/wp-content/uploads/2026/05/algoritm-puzyrkovoj-sortirovki-330x140.jpg 330w" sizes="auto, (max-width: 770px) 100vw, 770px" /></a></div><div class="post-box__content" itemprop="articleBody">Пузырьковая сортировка &#8212; это одна из первых сортировок, с которой я познакомился ещё в школе на уроках информатики. Писали мы тогда на Паскале: for i := 1 to</div><footer class="post-box__footer"><a href="https://lessgo.ru/algorithms/algoritm-puzyrkovoj-sortirovki-na-go.html" class="entry-footer__more">Читать полностью</a></footer>
+            	<meta itemscope itemprop="mainEntityOfPage" itemType="https://schema.org/WebPage" itemid="https://lessgo.ru/algorithms/algoritm-puzyrkovoj-sortirovki-na-go.html" content="Алгоритм пузырьковой сортировки на Go">
+	<meta itemprop="dateModified" content="2026-05-11">
+    <div itemprop="publisher" itemscope itemtype="https://schema.org/Organization" style="display: none;"><meta itemprop="name" content="Go-блог Станислава Лемешаева"><meta itemprop="telephone" content="Go-блог Станислава Лемешаева"><meta itemprop="address" content="https://lessgo.ru"></div>
+    
+</div>
+<div id="post-627" class="post-box post-627 post type-post status-publish format-standard has-post-thumbnail  category-golang-go" itemscope itemtype="http://schema.org/BlogPosting">
+	<header class="entry-header"><div class="entry-title" itemprop="name"><span itemprop="headline"><a href="https://lessgo.ru/golang-go/gorutiny-v-go-chem-otlichayutsya-ot-potokov.html">Горутины в Go: Чем отличаются от потоков?</a></span></div><div class="entry-meta"><span class="entry-date"><time itemprop="datePublished" datetime="2026-05-05">05.05.2026</time></span><span class="entry-category"><span class="hidden-xs">Рубрика:</span> <a href="https://lessgo.ru/category/golang-go" itemprop="articleSection">Go (Golang)</a></span><span class="entry-author"><span class="hidden-xs">Автор:</span> <span itemprop="author">Станислав Лемешаев</span></span><span class="entry-meta__info"><span class="entry-meta__comments" title="Комментарии"><span class="fa fa-comment-o"></span> 0</span></span></div></header><div class="entry-image"><a href="https://lessgo.ru/golang-go/gorutiny-v-go-chem-otlichayutsya-ot-potokov.html"><img width="770" height="330" src="https://lessgo.ru/wp-content/uploads/2026/05/gorutiny-v-go.jpg" class="attachment-thumb-big size-thumb-big wp-post-image" alt="" itemprop="image" decoding="async" loading="lazy" srcset="https://lessgo.ru/wp-content/uploads/2026/05/gorutiny-v-go.jpg 770w, https://lessgo.ru/wp-content/uploads/2026/05/gorutiny-v-go-300x129.jpg 300w, https://lessgo.ru/wp-content/uploads/2026/05/gorutiny-v-go-768x329.jpg 768w, https://lessgo.ru/wp-content/uploads/2026/05/gorutiny-v-go-330x140.jpg 330w" sizes="auto, (max-width: 770px) 100vw, 770px" /></a></div><div class="post-box__content" itemprop="articleBody">Одна из первых вещей, которая подкупает в Go &#8212; это простота запуска конкурентного кода. Не нужно знать сложные библиотеки, не нужно думать о пулах потоков. Достаточно написать go</div><footer class="post-box__footer"><a href="https://lessgo.ru/golang-go/gorutiny-v-go-chem-otlichayutsya-ot-potokov.html" class="entry-footer__more">Читать полностью</a></footer>
+            	<meta itemscope itemprop="mainEntityOfPage" itemType="https://schema.org/WebPage" itemid="https://lessgo.ru/golang-go/gorutiny-v-go-chem-otlichayutsya-ot-potokov.html" content="Горутины в Go: Чем отличаются от потоков?">
+	<meta itemprop="dateModified" content="2026-05-06">
+    <div itemprop="publisher" itemscope itemtype="https://schema.org/Organization" style="display: none;"><meta itemprop="name" content="Go-блог Станислава Лемешаева"><meta itemprop="telephone" content="Go-блог Станислава Лемешаева"><meta itemprop="address" content="https://lessgo.ru"></div>
+    
+</div>
+</div>
+            
+            
+	<nav class="navigation pagination">
+		<div class="screen-reader-text">Пагинация записей</div>
+		<div class="nav-links"><span aria-current="page" class="page-numbers current">1</span>
+<a class="page-numbers" href="https://lessgo.ru/page/2">2</a>
+<span class="page-numbers dots">&hellip;</span>
+<a class="page-numbers" href="https://lessgo.ru/page/10">10</a>
+<a class="next page-numbers" href="https://lessgo.ru/page/2">Далее</a></div>
+	</nav>
+            
+            
+
+        
+		</main><!-- #main -->
+	</div><!-- #primary -->
+
+
+<aside id="secondary" class="widget-area" itemscope itemtype="http://schema.org/WPSideBar">
+
+    
+	<div id="block-2" class="widget widget_block widget_search"><form role="search" method="get" action="https://lessgo.ru/" class="wp-block-search__button-outside wp-block-search__text-button wp-block-search"    ><label class="wp-block-search__label" for="wp-block-search__input-1" >Поиск</label><div class="wp-block-search__inside-wrapper" ><input class="wp-block-search__input" id="wp-block-search__input-1" placeholder="" value="" type="search" name="s" required /><button aria-label="Поиск" class="wp-block-search__button wp-element-button" type="submit" >Поиск</button></div></form></div><div id="block-8" class="widget widget_block">
+<h2 class="wp-block-heading">Мои соц.сети</h2>
+</div><div id="block-7" class="widget widget_block"><style>
+.socials-chanels {
+    max-width: 250px;
+}
+.socials-chanels a {
+    display: inline-block;
+    margin: -1.5rem 0.5rem 0 0;
+}
+</style>
+
+<div class="socials-chanels">
+    <a href="https://lessgo.ru/feed" target="_blank"><img decoding="async" src="/wp-content/myimg/socialswidget/rss-icon.png" /></a>
+    <a href="https://stepik.org/users/126941182/profile" target="_blank"><img decoding="async" src="/wp-content/myimg/socialswidget/stepik-icon.png" /></a>
+    <a href="https://setka.ru/users/019d3348-0f7b-77e1-a563-309f4312b88d" target="_blank"><img decoding="async" src="/wp-content/myimg/socialswidget/setka-icon.png" /></a>
+</div></div><div id="block-6" class="widget widget_block">
+<div class="wp-block-group"><div class="wp-block-group__inner-container is-layout-flow wp-block-group-is-layout-flow">
+<h2 class="wp-block-heading">Рубрики</h2>
+
+
+<ul class="wp-block-categories-list wp-block-categories-taxonomy-category wp-block-categories">	<li class="cat-item cat-item-11"><a href="https://lessgo.ru/category/golang-go">Go (Golang)</a>
+</li>
+	<li class="cat-item cat-item-6"><a href="https://lessgo.ru/category/algorithms">Алгоритмы</a>
+</li>
+	<li class="cat-item cat-item-7"><a href="https://lessgo.ru/category/zadachi">Задачи</a>
+</li>
+	<li class="cat-item cat-item-10"><a href="https://lessgo.ru/category/interview">Интервью</a>
+</li>
+	<li class="cat-item cat-item-4"><a href="https://lessgo.ru/category/interesnoe">Интересное</a>
+</li>
+	<li class="cat-item cat-item-8"><a href="https://lessgo.ru/category/obuchenie">Обучение</a>
+</li>
+	<li class="cat-item cat-item-9"><a href="https://lessgo.ru/category/sovety">Советы</a>
+</li>
+</ul></div></div>
+</div><div id="block-3" class="widget widget_block">
+<div class="wp-block-group"><div class="wp-block-group__inner-container is-layout-flow wp-block-group-is-layout-flow"></div></div>
+</div><div id="block-9" class="widget widget_block">
+<h2 class="wp-block-heading">Моя группа в VK</h2>
+</div><div id="block-10" class="widget widget_block"><style>
+.vk-channels {
+    max-width: 250px;
+}
+.vk-channels p {
+    margin-top: -1.5rem;
+}
+a.vk-sub {
+    -webkit-transition: all 0.1s ease-in-out;
+    -moz-transition: all 0.1s ease-in-out;
+    -ms-transition: all 0.1s ease-in-out;
+    -o-transition: all 0.1s ease-in-out;
+    transition: all 0.1s ease-in-out;
+    padding: 5px 16px;
+    height: 42px;
+    border: 1px solid;
+    display: inline-block;
+    border-radius: 40px;
+    clear: both;
+    background: transparent;
+    text-transform: uppercase;
+    font-size: 14px;
+    line-height: 28px;
+    color: #4169E1;
+}
+a.vk-sub:before {
+    content: "\f138";
+    font-family: "FontAwesome";
+    margin-right: 7px;
+}
+a.vk-sub:hover {
+    color: #4169E1;
+    text-decoration: none;
+}
+.vk-channels .vk-icon {
+    vertical-align: middle;
+    margin: 0 0.5rem 0 0;
+}
+</style>
+
+<div class="vk-channels">
+    <p>Весь актуальный опыт и рабочие примеры — в моей группе VK.</p>        
+    <div>
+        <img decoding="async" class="vk-icon" src="/wp-content/myimg/telwidget/vk.png" /> 
+        <a href="https://vk.com/lssgo" class="vk-sub" target="_blank">Подписаться</a>
+    </div>
+</div></div>
+    
+</aside><!-- #secondary -->
+
+	</div><!-- #content -->
+
+    
+    
+    
+
+
+    <footer id="site-footer" class="site-footer container " itemscope itemtype="http://schema.org/WPFooter">
+        <div class="site-footer-inner ">
+
+            
+            <div class="footer-bottom">
+                <div class="footer-info">
+                    © 2025 - 2026 Go-блог Станислава Лемешаева
+                    <div class="footer-text">Копирование информации только с разрешения автора.</div>
+                                    </div><!-- .site-info -->
+
+                
+<div class="social-links">
+    <div class="social-buttons social-buttons--square social-buttons--circle social-buttons--small">
+
+    <span class="social-button social-button__vk js-link" data-href="aHR0cHM6Ly92ay5jb20vbHNzZ28=" data-target="_blank"></span><span class="social-button social-button__telegram js-link" data-href="aHR0cHM6Ly90Lm1lL2xzc2dv" data-target="_blank"></span><span class="social-button social-button__github js-link" data-href="aHR0cHM6Ly9naXRodWIuY29tL3NsZW1lc2hhZXY=" data-target="_blank"></span>
+    </div>
+</div>
+
+
+                <div class="footer-counters"><!--LiveInternet counter--><a href="https://www.liveinternet.ru/click"
+target="_blank"><img id="licntF7DB" width="88" height="31" style="border:0" 
+title="LiveInternet: показано число просмотров за 24 часа, посетителей за 24 часа и за сегодня"
+src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAEALAAAAAABAAEAAAIBTAA7"
+alt=""/></a><script>(function(d,s){d.getElementById("licntF7DB").src=
+"https://counter.yadro.ru/hit?t14.11;r"+escape(d.referrer)+
+((typeof(s)=="undefined")?"":";s"+s.width+"*"+s.height+"*"+
+(s.colorDepth?s.colorDepth:s.pixelDepth))+";u"+escape(d.URL)+
+";h"+escape(d.title.substring(0,150))+";"+Math.random()})
+(document,screen)</script><!--/LiveInternet-->
+
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript">
+    (function(m,e,t,r,i,k,a){
+        m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+        m[i].l=1*new Date();
+        for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+        k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
+    })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=105483431', 'ym');
+
+    ym(105483431, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", accurateTrackBounce:true, trackLinks:true});
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/105483431" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+<!-- Top.Mail.Ru counter -->
+<script type="text/javascript">
+var _tmr = window._tmr || (window._tmr = []);
+_tmr.push({id: "3776210", type: "pageView", start: (new Date()).getTime()});
+(function (d, w, id) {
+  if (d.getElementById(id)) return;
+  var ts = d.createElement("script"); ts.type = "text/javascript"; ts.async = true; ts.id = id;
+  ts.src = "https://top-fwz1.mail.ru/js/code.js";
+  var f = function () {var s = d.getElementsByTagName("script")[0]; s.parentNode.insertBefore(ts, s);};
+  if (w.opera == "[object Opera]") { d.addEventListener("DOMContentLoaded", f, false); } else { f(); }
+})(document, window, "tmr-code");
+</script>
+<noscript><div><img src="https://top-fwz1.mail.ru/counter?id=3776210;js=na" style="position:absolute;left:-9999px;" alt="Top.Mail.Ru" /></div></noscript>
+<!-- /Top.Mail.Ru counter --></div>            </div>
+        </div><!-- .site-footer-inner -->
+    </footer><!-- .site-footer -->
+
+
+            <button type="button" class="scrolltop js-scrolltop"></button>
+    
+
+</div><!-- #page -->
+
+
+		<script id="kama_spamblock">
+			window.addEventListener( 'DOMContentLoaded', function() {
+				document.addEventListener( 'mousedown', handleSubmit );
+				document.addEventListener( 'touchstart', handleSubmit );
+				document.addEventListener( 'keypress', handleSubmit );
+
+				function handleSubmit( ev ){
+					let sbmt = ev.target.closest( '#submit' );
+					if( ! sbmt ){
+						return;
+					}
+
+					let input = document.createElement( 'input' );
+					let date = new Date();
+
+					input.value = ''+ date.getUTCDate() + (date.getUTCMonth() + 1) + '12J4JQx0Sm';
+					input.name = 'ksbn_code';
+					input.type = 'hidden';
+
+					sbmt.parentNode.insertBefore( input, sbmt );
+				}
+			} );
+		</script>
+		<script type="speculationrules">
+{"prefetch":[{"source":"document","where":{"and":[{"href_matches":"/*"},{"not":{"href_matches":["/wp-*.php","/wp-admin/*","/wp-content/uploads/*","/wp-content/*","/wp-content/plugins/*","/wp-content/themes/root/*","/*\\?(.+)"]}},{"not":{"selector_matches":"a[rel~=\"nofollow\"]"}},{"not":{"selector_matches":".no-prefetch, .no-prefetch a"}}]},"eagerness":"conservative"}]}
+</script>
+<script>document.addEventListener("copy", (event) => {var pagelink = "\nИсточник: https://lessgo.ru";event.clipboardData.setData("text", document.getSelection() + pagelink);event.preventDefault();});</script><script id="dompurify-js" src="https://lessgo.ru/wp-content/plugins/responsive-lightbox/assets/dompurify/purify.min.js?ver=1dd785e1de9a"></script>
+<script id="responsive-lightbox-sanitizer-js-before">
+window.RLG = window.RLG || {}; window.RLG.sanitizeAllowedHosts = ["youtube.com","www.youtube.com","youtu.be","vimeo.com","player.vimeo.com"];
+//# sourceURL=responsive-lightbox-sanitizer-js-before
+</script>
+<script id="responsive-lightbox-sanitizer-js" src="https://lessgo.ru/wp-content/plugins/responsive-lightbox/js/sanitizer.js?ver=eb17f9b3fafd"></script>
+<script id="responsive-lightbox-nivo-js" src="https://lessgo.ru/wp-content/plugins/responsive-lightbox/assets/nivo/nivo-lightbox.min.js?ver=54acb57afb70"></script>
+<script id="underscore-js" src="https://lessgo.ru/wp-includes/js/underscore.min.js?ver=855365cd8d6b"></script>
+<script id="responsive-lightbox-infinite-scroll-js" src="https://lessgo.ru/wp-content/plugins/responsive-lightbox/assets/infinitescroll/infinite-scroll.pkgd.min.js?ver=23fb94884a48"></script>
+<script id="responsive-lightbox-js-before">
+var rlArgs = {"script":"nivo","selector":"lightbox","customEvents":"","activeGalleries":true,"effect":"fade","clickOverlayToClose":"true","keyboardNav":"true","errorMessage":"\u0422\u0440\u0435\u0431\u0443\u0435\u043c\u044b\u0439 \u043a\u043e\u043d\u0442\u0435\u043d\u0442 \u043d\u0435 \u0443\u0434\u0430\u043b\u043e\u0441\u044c \u0437\u0430\u0433\u0440\u0443\u0437\u0438\u0442\u044c. \u041f\u043e\u043f\u0440\u043e\u0431\u0443\u0439\u0442\u0435 \u043f\u043e\u0437\u0436\u0435.","woocommerce_gallery":false,"ajaxurl":"https:\/\/lessgo.ru\/wp-admin\/admin-ajax.php","nonce":"5d848d11ea","preview":false,"postId":691,"scriptExtension":false};
+
+//# sourceURL=responsive-lightbox-js-before
+</script>
+<script id="responsive-lightbox-js" src="https://lessgo.ru/wp-content/plugins/responsive-lightbox/js/front.js?ver=eb17f9b3fafd"></script>
+<script id="root-scripts-js-extra">
+var settings_array = {"rating_text_average":"\u0441\u0440\u0435\u0434\u043d\u0435\u0435","rating_text_from":"\u0438\u0437","lightbox_enabled":""};
+var wps_ajax = {"url":"https://lessgo.ru/wp-admin/admin-ajax.php","nonce":"7a58cb6239"};
+//# sourceURL=root-scripts-js-extra
+</script>
+<script id="root-scripts-js" src="https://lessgo.ru/wp-content/themes/root/assets/js/scripts.min.js?ver=1e4966dd2df8"></script>
+
+
+</body>
+</html>
