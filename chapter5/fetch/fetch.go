@@ -40,7 +40,6 @@ func fetch(url string) (filename string, n int64, err error) {
 	if err != nil {
 		return "", 0, err
 	}
-	defer f.Close()
 
 	n, err = io.Copy(f, resp.Body)
 	// Close file, but prefer error from Copy, if any.
