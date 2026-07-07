@@ -19,6 +19,11 @@ func (p Point) Distance(q Point) float64 {
 	return math.Hypot(q.X-p.X, q.Y-p.Y)
 }
 
+func (p *Point) ScaleBy(factor float64) {
+	p.X *= factor
+	p.Y *= factor
+}
+
 // A Path is a journey connecting the points with straight lines.
 type Path []Point
 
@@ -47,4 +52,8 @@ func main() {
 	}
 
 	fmt.Println(perim.Distance()) // "12"
+
+	r := &Point{1, 2}
+	r.ScaleBy(2)
+	fmt.Println(*r) // "{2, 4}"
 }
