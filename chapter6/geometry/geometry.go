@@ -56,4 +56,13 @@ func main() {
 	r := &Point{1, 2}
 	r.ScaleBy(2)
 	fmt.Println(*r) // "{2, 4}"
+
+	s := Point{1, 2}
+	sptr := &s
+	sptr.ScaleBy(2)
+	fmt.Println(p) // "{2, 4}"
+
+	w := Point{1, 2}
+	(&w).ScaleBy(2)
+	fmt.Println(w) // "{2, 4}"
 }
