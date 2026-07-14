@@ -37,4 +37,13 @@ func main() {
 	scaleP(2)           // p becomes (2, 4)
 	scaleP(3)           // then (6, 12)
 	scaleP(10)          // then (60, 120)
+
+	distance := Point.Distance   // method expression
+	fmt.Println(distance(p, q))  // "5"
+	fmt.Printf("%T\n", distance) // "func(Point, Point) float64"
+
+	scale := (*Point).ScaleBy
+	scale(&p, 2)
+	fmt.Println(p)            // "{2, 4}"
+	fmt.Printf("%T\n", scale) // "func(*Point, float64)"
 }
