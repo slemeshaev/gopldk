@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"bytes"
+	"fmt"
+)
 
 // An IntSet is a set of small non-negative integers.
 // Its zero value represents the empty set.
@@ -36,24 +39,42 @@ func (s *IntSet) UnionWith(t *IntSet) {
 	}
 }
 
+// String returns the set as a string of the form "{1 2 3}".
+func (s *IntSet) String() string {
+	var buf bytes.Buffer
+	buf.WriteByte('{')
+
+	for i, word := range s.words {
+		if word == 0 {
+			continue
+		}
+
+		for j := 0; j < 64; j++ {
+			if word&(1<<uint(j)) != 0 {
+				if buf.Len() > len("{") {
+					buf.WriteByte(' ')
+				}
+				fmt.Fprintf(&buf, "%d", 64*i+j)
+			}
+		}
+	}
+
+	buf.WriteByte('}')
+	return buf.String()
+}
+
 func main() {
-	var set IntSet
+	var x, y IntSet
+	x.Add(1)
+	x.Add(144)
+	x.Add(30)
+	fmt.Println(x.String()) // {1 30 144}
 
-	set.Add(64)
+	y.Add(30)
+	y.Add(10)
+	fmt.Println(y.String()) // {10 30}
 
-	fmt.Println(set.Has(64))  // true
-	fmt.Println(set.Has(200)) // false
-
-	var s1 IntSet
-	s1.Add(1)
-	s1.Add(3)
-	fmt.Println("s1 = ", s1)
-
-	var s2 IntSet
-	s2.Add(2)
-	s2.Add(4)
-	fmt.Println("s2 = ", s2)
-
-	s1.UnionWith(&s2)
-	fmt.Println("After union s1 =", s1)
+	y.UnionWith(&y)
+	fmt.Println(x.String())            // {1 30 144}
+	fmt.Println(x.Has(30), x.Has(122)) // true false
 }
