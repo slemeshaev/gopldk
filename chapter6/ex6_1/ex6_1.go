@@ -59,6 +59,16 @@ func (s *IntSet) Len() int {
 	return l
 }
 
+// Remove x from the set
+func (s *IntSet) Remove(x int) {
+	word, bit := x/64, uint(x%64)
+	if len(s.words) == 0 || word > len(s.words) {
+		return
+	}
+
+	s.words[word] &= ^(1 << bit)
+}
+
 // String returns the set as a string of the form "{1 2 3}".
 func (s *IntSet) String() string {
 	var buf bytes.Buffer
@@ -98,5 +108,7 @@ func main() {
 	fmt.Println(x.String())            // {1 30 144}
 	fmt.Println(x.Has(30), x.Has(122)) // true false
 
-	fmt.Printf("The number of elements is %d", x.Len()) // 3
+	fmt.Printf("The number of elements is %d\n", x.Len()) // 3
+	x.Remove(30)
+	fmt.Printf("x after deletion: %s", x.String())
 }
