@@ -69,6 +69,13 @@ func (s *IntSet) Remove(x int) {
 	s.words[word] &= ^(1 << bit)
 }
 
+// Remove all elements from the set
+func (s *IntSet) Clear() {
+	for i := range s.words {
+		s.words[i] = 0
+	}
+}
+
 // String returns the set as a string of the form "{1 2 3}".
 func (s *IntSet) String() string {
 	var buf bytes.Buffer
@@ -110,5 +117,13 @@ func main() {
 
 	fmt.Printf("The number of elements is %d\n", x.Len()) // 3
 	x.Remove(30)
-	fmt.Printf("x after deletion: %s", x.String())
+	fmt.Printf("x after deletion: %s\n", x.String())
+
+	var z IntSet
+	z.Add(5)
+	z.Add(45)
+	z.Add(103)
+	fmt.Printf("z before clearing: %s\n", z.String())
+	z.Clear()
+	fmt.Printf("z after clearing: %s\n", z.String())
 }
