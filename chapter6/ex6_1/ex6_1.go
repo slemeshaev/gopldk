@@ -76,6 +76,14 @@ func (s *IntSet) Clear() {
 	}
 }
 
+// Return a copy of the set
+func (s *IntSet) Copy() *IntSet {
+	c := new(IntSet)
+	c.words = make([]uint64, len(s.words))
+	copy(c.words, s.words)
+	return c
+}
+
 // String returns the set as a string of the form "{1 2 3}".
 func (s *IntSet) String() string {
 	var buf bytes.Buffer
@@ -126,4 +134,7 @@ func main() {
 	fmt.Printf("z before clearing: %s\n", z.String())
 	z.Clear()
 	fmt.Printf("z after clearing: %s\n", z.String())
+
+	c := x.Copy()
+	fmt.Printf("c after copying: %s\n", c.String())
 }
