@@ -45,6 +45,19 @@ func (s *IntSet) UnionWith(t *IntSet) {
 	}
 }
 
+// IntersectWith sets s to the intersection of s and t.
+func (s *IntSet) IntersectWith(t *IntSet) {
+	if len(s.words) > len(t.words) {
+		s.words = s.words[:len(t.words)]
+	}
+
+	for i, tword := range t.words {
+		if i < len(s.words) {
+			s.words[i] &= tword
+		}
+	}
+}
+
 func bitCount(x uint64) int {
 	x = x - ((x >> 1) & 0x5555555555555555)
 	x = (x & 0x3333333333333333) + ((x >> 2) & 0x3333333333333333)
@@ -122,7 +135,13 @@ func (s *IntSet) String() string {
 }
 
 func main() {
-	var x IntSet
+	x := new(IntSet)
+	y := new(IntSet)
+
 	x.AddAll(1, 144, 30)
-	fmt.Println(x.String()) // {1 30 144}
+	y.AddAll(2, 144, 45)
+
+	x.IntersectWith(y)
+
+	fmt.Println(x.String()) // {144}
 }
