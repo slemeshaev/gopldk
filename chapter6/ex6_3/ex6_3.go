@@ -58,6 +58,23 @@ func (s *IntSet) IntersectWith(t *IntSet) {
 	}
 }
 
+// DiffrenceWith sets s to the difference of s and t.
+func (s *IntSet) DifferenceWith(t *IntSet) {
+	if len(s.words) > len(t.words) {
+		s.words = s.words[:len(t.words)]
+	}
+
+	for i, tword := range t.words {
+		if i < len(s.words) {
+			s.words[i] &= ^tword
+		}
+	}
+
+	for len(s.words) > 0 && s.words[len(s.words)-1] == 0 {
+		s.words = s.words[:len(s.words)-1]
+	}
+}
+
 func bitCount(x uint64) int {
 	x = x - ((x >> 1) & 0x5555555555555555)
 	x = (x & 0x3333333333333333) + ((x >> 2) & 0x3333333333333333)
@@ -141,7 +158,9 @@ func main() {
 	x.AddAll(1, 144, 30)
 	y.AddAll(2, 144, 45)
 
-	x.IntersectWith(y)
+	// x.IntersectWith(y)
+	// fmt.Println(x.String()) // {144}
 
-	fmt.Println(x.String()) // {144}
+	x.DifferenceWith(y)
+	fmt.Println(x.String()) // {1 30}
 }
