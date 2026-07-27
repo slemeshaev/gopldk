@@ -75,6 +75,21 @@ func (s *IntSet) DifferenceWith(t *IntSet) {
 	}
 }
 
+// SymmetricDifference sets s to the symmetric difference of s and t.
+func (s *IntSet) SymmetricDifference(t *IntSet) {
+	if len(t.words) > len(s.words) {
+		s.words = append(s.words, make([]uint64, len(t.words)-len(s.words))...)
+	}
+
+	for i, tword := range t.words {
+		s.words[i] ^= tword
+	}
+
+	for len(s.words) > 0 && s.words[len(s.words)-1] == 0 {
+		s.words = s.words[:len(s.words)-1]
+	}
+}
+
 func bitCount(x uint64) int {
 	x = x - ((x >> 1) & 0x5555555555555555)
 	x = (x & 0x3333333333333333) + ((x >> 2) & 0x3333333333333333)
@@ -161,6 +176,9 @@ func main() {
 	// x.IntersectWith(y)
 	// fmt.Println(x.String()) // {144}
 
-	x.DifferenceWith(y)
-	fmt.Println(x.String()) // {1 30}
+	// x.DifferenceWith(y)
+	// fmt.Println(x.String()) // {1 30}
+
+	x.SymmetricDifference(y) // {1, 2, 30, 45}
+	fmt.Println(x.String())
 }
