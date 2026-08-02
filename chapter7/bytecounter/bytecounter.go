@@ -11,11 +11,11 @@ func (c *ByteCounter) Write(p []byte) (int, error) {
 
 func main() {
 	var c ByteCounter
-	c.Write([]byte("hello"))
-	fmt.Println(c) // "5", = len("hello")
+	c.Write([]byte("Hello"))
+	fmt.Println(c) // "5", = len("Hello")
 	c = 0          // reset the counter
 
-	var name = "Dolly"
+	var name = "Stanislav"
 	fmt.Fprintf(&c, "hello, %s", name)
-	fmt.Println(c) // "12", = len("hello, Dolly")
+	fmt.Println(c) // "16", = len("Hello, Stanislav")
 }
