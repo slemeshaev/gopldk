@@ -31,13 +31,32 @@ func (c *WordCounter) Write(p []byte) (int, error) {
 	return count, nil
 }
 
+type LineCounter int
+
+func (c *LineCounter) Write(p []byte) (int, error) {
+	s := bufio.NewScanner(bytes.NewBuffer(p))
+	var count int
+	for s.Scan() {
+		count++
+	}
+
+	*c += LineCounter(count)
+	return count, nil
+}
+
 func main() {
-	var c ByteCounter
-	c.Write([]byte("Hello"))
-	fmt.Println(c) // "5", = len("hello")
+	// WordCounter
+	var b ByteCounter
+	b.Write([]byte("Hello"))
+	fmt.Println("ByteCounter:", b) // 5
 
 	// WordCounter
 	var w WordCounter
 	w.Write([]byte("Hello world, how are you?"))
 	fmt.Println("WordCounter:", w) // 5
+
+	// LineCounter
+	var l LineCounter
+	l.Write([]byte("first line\nsecond line\nthird line"))
+	fmt.Println("LineCounter:", l) // 3
 }
