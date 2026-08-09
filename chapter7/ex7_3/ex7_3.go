@@ -38,6 +38,51 @@ func appendValues(values []int, t *Tree) []int {
 	return values
 }
 
+// Sort sorts values in place.
+func Sort(values []int) {
+	var root *Tree
+	for _, v := range values {
+		root = add(root, v)
+	}
+	appendValues(values[:0], root)
+}
+
+func add(t *Tree, value int) *Tree {
+	if t == nil {
+		// Equivalent to return &tree{value: value}
+		t = new(Tree)
+		t.value = value
+		return t
+	}
+
+	if value < t.value {
+		t.left = add(t.left, value)
+	} else {
+		t.right = add(t.right, value)
+	}
+
+	return t
+}
+
 func main() {
-	//
+	// Example 1: Manually creating a tree
+	root := &Tree{value: 5}
+	root.left = &Tree{value: 3}
+	root.right = &Tree{value: 7}
+	root.left.left = &Tree{value: 1}
+	root.left.right = &Tree{value: 4}
+	root.right.right = &Tree{value: 9}
+
+	fmt.Println("In-order traversal:", root.String()) // [1 3 4 5 7 9]
+
+	// Example 2: Slice sorting
+	values := []int{5, 3, 7, 1, 4, 9, 2, 8, 6}
+	fmt.Println("Before Sort:", values)
+
+	Sort(values)
+	fmt.Println("After Sort:", values) // [1 2 3 4 5 6 7 8 9]
+
+	// Example 3: Empty tree
+	empty := &Tree{}
+	fmt.Println("Empty tree:", empty.String()) // []
 }
