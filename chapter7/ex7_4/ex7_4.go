@@ -5,7 +5,10 @@
 
 package main
 
-import "io"
+import (
+	"fmt"
+	"io"
+)
 
 type StringReader struct {
 	s string
@@ -25,5 +28,15 @@ func NewReader(s string) io.Reader {
 }
 
 func main() {
-	//
+	reader := NewReader("Hello, World!")
+	buf := make([]byte, 5)
+
+	for {
+		n, err := reader.Read(buf)
+		if err == io.EOF {
+			break
+		}
+
+		fmt.Printf("Read %d bytes: %s\n", n, string(buf[:n]))
+	}
 }
