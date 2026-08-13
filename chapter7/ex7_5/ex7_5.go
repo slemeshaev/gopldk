@@ -5,7 +5,11 @@
 
 package main
 
-import "io"
+import (
+	"fmt"
+	"io"
+	"strings"
+)
 
 type LimitedReader struct {
 	reader io.Reader
@@ -32,5 +36,16 @@ func LimitReader(r io.Reader, n int64) io.Reader {
 }
 
 func main() {
-	//
+	fullReader := strings.NewReader("Hello, World! This is a test string.")
+	limitedReader := LimitReader(fullReader, 10)
+
+	buf := make([]byte, 3)
+	for {
+		n, err := limitedReader.Read(buf)
+		if err == io.EOF {
+			fmt.Println("EOF reached")
+			break
+		}
+		fmt.Printf("Read %d bytes: %s\n", n, string(buf[:n]))
+	}
 }
