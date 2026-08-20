@@ -20,6 +20,7 @@ func main() {
 	w = new(bytes.Buffer)
 	fmt.Println("3. type: ", reflect.TypeOf(w))
 	fmt.Println("3. value: ", reflect.ValueOf(w))
+	w.Write([]byte("hello"))
 
 	w = nil
 	fmt.Println("4. type: ", reflect.TypeOf(w))
