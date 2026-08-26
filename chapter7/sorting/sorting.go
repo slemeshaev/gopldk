@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"sort"
 	"text/tabwriter"
 	"time"
 )
@@ -17,7 +18,7 @@ type Track struct {
 
 var tracks = []*Track{
 	{"Go", "Delilah", "From the Roots Up", 2012, length("3m38s")},
-	{"Go", "Moby", "From the Roots Up", 1992, length("3m37s")},
+	{"Go", "Moby", "Moby", 1992, length("3m37s")},
 	{"Go Ahead", "Alicia Keys", "As I Am", 2007, length("4m36s")},
 	{"Ready 2 Go", "Martin Solveig", "Smash", 2011, length("4m24s")},
 }
@@ -43,6 +44,21 @@ func printTracks(tracks []*Track) {
 	tw.Flush() // calculate column widths and print table
 }
 
+type byYear []*Track
+
+func (x byYear) Len() int {
+	return len(x)
+}
+
+func (x byYear) Less(i, j int) bool {
+	return x[i].Year < x[j].Year
+}
+
+func (x byYear) Swap(i, j int) {
+	x[i], x[j] = x[j], x[i]
+}
+
 func main() {
-	//
+	sort.Sort(byYear(tracks))
+	printTracks(tracks)
 }
