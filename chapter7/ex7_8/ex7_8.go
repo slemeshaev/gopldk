@@ -7,7 +7,6 @@ package main
 import (
 	"fmt"
 	"os"
-	"sort"
 	"text/tabwriter"
 	"time"
 )
@@ -48,17 +47,17 @@ func printTracks(tracks []*Track) {
 	tw.Flush() // calculate column widths and print table
 }
 
-type byYear []*Track
+type byTitle []*Track
 
-func (x byYear) Len() int {
+func (x byTitle) Len() int {
 	return len(x)
 }
 
-func (x byYear) Less(i, j int) bool {
-	return x[i].Year < x[j].Year
+func (x byTitle) Less(i, j int) bool {
+	return x[i].Title < x[j].Title
 }
 
-func (x byYear) Swap(i, j int) {
+func (x byTitle) Swap(i, j int) {
 	x[i], x[j] = x[j], x[i]
 }
 
@@ -76,56 +75,20 @@ func (x byArtist) Swap(i, j int) {
 	x[i], x[j] = x[j], x[i]
 }
 
-type customSort struct {
-	t    []*Track
-	less func(x, y *Track) bool
+type byYear []*Track
+
+func (x byYear) Len() int {
+	return len(x)
 }
 
-func (x customSort) Len() int {
-	return len(x.t)
+func (x byYear) Less(i, j int) bool {
+	return x[i].Year < x[j].Year
 }
 
-func (x customSort) Less(i, j int) bool {
-	return x.less(x.t[i], x.t[j])
-}
-
-func (x customSort) Swap(i, j int) {
-	x.t[i], x.t[j] = x.t[j], x.t[i]
+func (x byYear) Swap(i, j int) {
+	x[i], x[j] = x[j], x[i]
 }
 
 func main() {
-	sort.Sort(byYear(tracks))
-	printTracks(tracks)
-
-	sort.Sort(sort.Reverse(byArtist(tracks)))
-	printTracks(tracks)
-
-	sort.Sort(customSort{tracks, func(x, y *Track) bool {
-		if x.Title != y.Title {
-			return x.Title < y.Title
-		}
-
-		if x.Year != y.Year {
-			return x.Year < y.Year
-		}
-
-		if x.Length != y.Length {
-			return x.Length < y.Length
-		}
-
-		return false
-	}})
-
-	printTracks(tracks)
-
-	values := []int{3, 1, 4, 1}
-	fmt.Println(sort.IntsAreSorted(values)) // false
-
-	sort.Ints(values)
-	fmt.Println(values)                     // [1 1 3 4]
-	fmt.Println(sort.IntsAreSorted(values)) // true
-
-	sort.Sort(sort.Reverse(sort.IntSlice(values)))
-	fmt.Println(values)                     // [4 3 1 1]
-	fmt.Println(sort.IntsAreSorted(values)) // false
+	//
 }
