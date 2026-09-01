@@ -89,6 +89,28 @@ func (x byYear) Swap(i, j int) {
 	x[i], x[j] = x[j], x[i]
 }
 
+type less func(x, y *Track) bool
+
+func colTitle(x, y *Track) bool {
+	return x.Title < y.Title
+}
+
+func colArtist(x, y *Track) bool {
+	return x.Artist < y.Artist
+}
+
+func colAlbum(x, y *Track) bool {
+	return x.Album < y.Album
+}
+
+func colYear(x, y *Track) bool {
+	return x.Year < y.Year
+}
+
+func colLength(x, y *Track) bool {
+	return x.Length < y.Length
+}
+
 func main() {
 	//
 }
