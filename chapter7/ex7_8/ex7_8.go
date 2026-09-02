@@ -111,6 +111,43 @@ func colLength(x, y *Track) bool {
 	return x.Length < y.Length
 }
 
+type byColumns struct {
+	tracks  []*Track
+	columns []less
+}
+
+func sortByColumns(t []*Track, f ...less) *byColumns {
+	return &byColumns{
+		tracks:  t,
+		columns: f,
+	}
+}
+
+func (x byColumns) Len() int {
+	return len(x.tracks)
+}
+
+func (x byColumns) Swap(i, j int) {
+	x.tracks[i], x.tracks[j] = x.tracks[j], x.tracks[i]
+}
+
+func (x byColumns) Less(i, j int) bool {
+	a, b := x.tracks[i], x.tracks[j]
+	var k int
+
+	for k = 0; k < len(x.columns)-1; k++ {
+		f := x.columns[k]
+		switch {
+		case f(a, b):
+			return true
+		case f(b, a):
+			return false
+		}
+	}
+
+	return x.columns[k](a, b)
+}
+
 func main() {
 	//
 }
