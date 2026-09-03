@@ -7,6 +7,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"sort"
 	"text/tabwriter"
 	"time"
 )
@@ -19,11 +20,13 @@ type Track struct {
 	Length time.Duration
 }
 
-var tracks = []*Track{
-	{"Go", "Delilah", "From the Roots Up", 2012, length("3m38s")},
-	{"Go", "Moby", "Moby", 1992, length("3m37s")},
-	{"Go Ahead", "Alicia Keys", "As I Am", 2007, length("4m36s")},
-	{"Ready 2 Go", "Martin Solveig", "Smash", 2011, length("4m24s")},
+func tracks() []*Track {
+	return []*Track{
+		{"Go", "Delilah", "From the Roots Up", 2012, length("3m38s")},
+		{"Go", "Moby", "Moby", 1992, length("3m37s")},
+		{"Go Ahead", "Alicia Keys", "As I Am", 2007, length("4m36s")},
+		{"Ready 2 Go", "Martin Solveig", "Smash", 2011, length("4m24s")},
+	}
 }
 
 func length(s string) time.Duration {
@@ -148,6 +151,23 @@ func (x byColumns) Less(i, j int) bool {
 	return x.columns[k](a, b)
 }
 
+func useSortByColumns() []*Track {
+	t := tracks()
+	sort.Sort(sortByColumns(t, colTitle, colArtist))
+	return t
+}
+
+func useSortStable() []*Track {
+	t := tracks()
+	sort.Stable(byArtist(t))
+	sort.Stable(byTitle(t))
+	return t
+}
+
 func main() {
-	//
+	fmt.Println("By Title, Artist")
+	printTracks(useSortByColumns())
+
+	fmt.Println("\nUse sort.Stable. By Title, Artist")
+	printTracks(useSortStable())
 }
