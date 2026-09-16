@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"strconv"
 )
 
 func main() {
@@ -41,5 +42,23 @@ func (db database) price(w http.ResponseWriter, req *http.Request) {
 	} else {
 		w.WriteHeader(http.StatusNotFound) // 404
 		fmt.Fprintf(w, "no such item: %q\n", item)
+	}
+}
+
+func (db database) create(w http.ResponseWriter, req *http.Request) {
+	item := req.URL.Query().Get("item")
+	price, err := strconv.ParseFloat(req.URL.Query().Get("price"), 32)
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		fmt.Fprintf(w, "Parse price: %v.\n", err)
+		return
+	}
+
+	if _, exist := db[item]; exist {
+		w.WriteHeader(http.StatusBadRequest)
+		fmt.Fprintf(w, "Item %s already exists.\n", item)
+	} else {
+		db[item] = dollars(price)
+		fmt.Fprintf(w, "Successfully created item. %s: %s", item, db[item])
 	}
 }
