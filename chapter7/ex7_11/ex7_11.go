@@ -72,3 +72,21 @@ func (db database) read(w http.ResponseWriter, req *http.Request) {
 		fmt.Fprintf(w, "no such item: %q\n", item)
 	}
 }
+
+func (db database) update(w http.ResponseWriter, req *http.Request) {
+	item := req.URL.Query().Get("item")
+	price, err := strconv.ParseFloat(req.URL.Query().Get("price"), 32)
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		fmt.Fprintf(w, "Parse price: %v.\n", err)
+		return
+	}
+
+	if _, ok := db[item]; ok {
+		db[item] = dollars(price)
+		fmt.Fprintf(w, "Successfully updated item. %s: %s\n", item, db[item])
+	} else {
+		w.WriteHeader(http.StatusNotFound) // 404
+		fmt.Fprintf(w, "no such item: %q\n", item)
+	}
+}
