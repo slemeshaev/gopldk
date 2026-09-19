@@ -90,3 +90,14 @@ func (db database) update(w http.ResponseWriter, req *http.Request) {
 		fmt.Fprintf(w, "no such item: %q\n", item)
 	}
 }
+
+func (db database) delete(w http.ResponseWriter, req *http.Request) {
+	item := req.URL.Query().Get("item")
+	if _, ok := db[item]; ok {
+		delete(db, item)
+		fmt.Fprintf(w, "Successfully deleted item %s\n", item)
+	} else {
+		w.WriteHeader(http.StatusNotFound) // 404
+		fmt.Fprintf(w, "no such item: %q", item)
+	}
+}
