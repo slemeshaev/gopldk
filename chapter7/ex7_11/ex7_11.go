@@ -6,19 +6,18 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"log"
+	"math"
 	"net/http"
 	"strconv"
+	"sync"
 )
 
 func main() {
-	db := database{"shoes": 50, "socks": 5}
-
-	http.HandleFunc("/list", db.list)
-	http.HandleFunc("/price", db.price)
-
-	log.Fatal(http.ListenAndServe("localhost:8000", nil))
+	db := newDatabase(map[string]dollars{"shoes": 50, "socks": 5})
+	log.Fatal(http.ListenAndServe("localhost:8000", db.routes()))
 }
 
 type dollars float32
@@ -27,17 +26,63 @@ func (d dollars) String() string {
 	return fmt.Sprintf("$%.2f", d)
 }
 
-type database map[string]dollars
+// database guards the map with a mutex: every HTTP request is served
+// in its own goroutine, so without synchronization we get a data race.
+type database struct {
+	mu    sync.RWMutex
+	items map[string]dollars
+}
 
-func (db database) list(w http.ResponseWriter, req *http.Request) {
-	for item, price := range db {
+func newDatabase(init map[string]dollars) *database {
+	return &database{items: init}
+}
+
+func (db *database) routes() *http.ServeMux {
+	mux := http.NewServeMux()
+
+	mux.HandleFunc("/list", db.list)
+	mux.HandleFunc("/price", db.read)
+	mux.HandleFunc("/create", db.create)
+	mux.HandleFunc("/read", db.read)
+	mux.HandleFunc("/update", db.update)
+	mux.HandleFunc("/delete", db.delete)
+
+	return mux
+}
+
+// parseRequest extracts item from the request and, if needPrice is set, validates price too.
+func parseRequest(req *http.Request, needPrice bool) (item string, price dollars, err error) {
+	q := req.URL.Query()
+	item = q.Get("item")
+	if item == "" {
+		return "", 0, errors.New("item is required")
+	}
+
+	if !needPrice {
+		return item, 0, nil
+	}
+
+	f, err := strconv.ParseFloat(q.Get("price"), 32)
+	if err != nil {
+		return "", 0, fmt.Errorf("invalid price: %w", err)
+	}
+
+	if math.IsNaN(f) || math.IsInf(f, 0) || f < 0 {
+		return "", 0, fmt.Errorf("invalid price %q: must be a finite non-negative number", q.Get("price"))
+	}
+
+	return item, dollars(f), nil
+}
+
+func (db *database) list(w http.ResponseWriter, req *http.Request) {
+	for item, price := range db.items {
 		fmt.Fprintf(w, "%s: %s\n", item, price)
 	}
 }
 
-func (db database) price(w http.ResponseWriter, req *http.Request) {
+func (db *database) price(w http.ResponseWriter, req *http.Request) {
 	item := req.URL.Query().Get("item")
-	if price, ok := db[item]; ok {
+	if price, ok := db.items[item]; ok {
 		fmt.Fprintf(w, "%s\n", price)
 	} else {
 		w.WriteHeader(http.StatusNotFound) // 404
@@ -45,7 +90,7 @@ func (db database) price(w http.ResponseWriter, req *http.Request) {
 	}
 }
 
-func (db database) create(w http.ResponseWriter, req *http.Request) {
+func (db *database) create(w http.ResponseWriter, req *http.Request) {
 	item := req.URL.Query().Get("item")
 	price, err := strconv.ParseFloat(req.URL.Query().Get("price"), 32)
 	if err != nil {
@@ -54,18 +99,18 @@ func (db database) create(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	if _, exist := db[item]; exist {
+	if _, exist := db.items[item]; exist {
 		w.WriteHeader(http.StatusBadRequest)
 		fmt.Fprintf(w, "Item %s already exists.\n", item)
 	} else {
-		db[item] = dollars(price)
-		fmt.Fprintf(w, "Successfully created item. %s: %s", item, db[item])
+		db.items[item] = dollars(price)
+		fmt.Fprintf(w, "Successfully created item. %s: %s", item, db.items[item])
 	}
 }
 
-func (db database) read(w http.ResponseWriter, req *http.Request) {
+func (db *database) read(w http.ResponseWriter, req *http.Request) {
 	item := req.URL.Query().Get("item")
-	if price, ok := db[item]; ok {
+	if price, ok := db.items[item]; ok {
 		fmt.Fprintf(w, "%s: %s\n", item, price)
 	} else {
 		w.WriteHeader(http.StatusNotFound)
@@ -73,7 +118,7 @@ func (db database) read(w http.ResponseWriter, req *http.Request) {
 	}
 }
 
-func (db database) update(w http.ResponseWriter, req *http.Request) {
+func (db *database) update(w http.ResponseWriter, req *http.Request) {
 	item := req.URL.Query().Get("item")
 	price, err := strconv.ParseFloat(req.URL.Query().Get("price"), 32)
 	if err != nil {
@@ -82,19 +127,19 @@ func (db database) update(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	if _, ok := db[item]; ok {
-		db[item] = dollars(price)
-		fmt.Fprintf(w, "Successfully updated item. %s: %s\n", item, db[item])
+	if _, ok := db.items[item]; ok {
+		db.items[item] = dollars(price)
+		fmt.Fprintf(w, "Successfully updated item. %s: %s\n", item, db.items[item])
 	} else {
 		w.WriteHeader(http.StatusNotFound) // 404
 		fmt.Fprintf(w, "no such item: %q\n", item)
 	}
 }
 
-func (db database) delete(w http.ResponseWriter, req *http.Request) {
+func (db *database) delete(w http.ResponseWriter, req *http.Request) {
 	item := req.URL.Query().Get("item")
-	if _, ok := db[item]; ok {
-		delete(db, item)
+	if _, ok := db.items[item]; ok {
+		delete(db.items, item)
 		fmt.Fprintf(w, "Successfully deleted item %s\n", item)
 	} else {
 		w.WriteHeader(http.StatusNotFound) // 404
