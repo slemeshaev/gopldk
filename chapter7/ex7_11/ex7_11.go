@@ -34,7 +34,12 @@ type database struct {
 }
 
 func newDatabase(init map[string]dollars) *database {
-	return &database{items: init}
+	items := make(map[string]dollars, len(init))
+	for item, price := range init {
+		items[item] = price
+	}
+
+	return &database{items: items}
 }
 
 func (db *database) routes() *http.ServeMux {
