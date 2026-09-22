@@ -55,6 +55,15 @@ func (db *database) routes() *http.ServeMux {
 	return mux
 }
 
+// get returns the price of item and whether the item exists
+func (db *database) get(item string) (dollars, bool) {
+	db.mu.RLock()
+	defer db.mu.RUnlock()
+
+	price, ok := db.items[item]
+	return price, ok
+}
+
 // parseRequest extracts item from the request and, if needPrice is set, validates price too.
 func parseRequest(req *http.Request, needPrice bool) (item string, price dollars, err error) {
 	q := req.URL.Query()
