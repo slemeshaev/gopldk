@@ -79,6 +79,19 @@ func (db *database) add(item string, price dollars) bool {
 	return true
 }
 
+// set changes the price of an existing item. It reports false if the item does not exist.
+func (db *database) set(item string, price dollars) bool {
+	db.mu.Lock()
+	defer db.mu.Unlock()
+
+	if _, ok := db.items[item]; !ok {
+		return false
+	}
+
+	db.items[item] = price
+	return true
+}
+
 // parseRequest extracts item from the request and, if needPrice is set, validates price too.
 func parseRequest(req *http.Request, needPrice bool) (item string, price dollars, err error) {
 	q := req.URL.Query()
