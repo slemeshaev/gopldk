@@ -11,6 +11,7 @@ import (
 	"log"
 	"math"
 	"net/http"
+	"sort"
 	"strconv"
 	"sync"
 )
@@ -90,6 +91,41 @@ func (db *database) set(item string, price dollars) bool {
 
 	db.items[item] = price
 	return true
+}
+
+// remove deletes item. It reports false if the item does not exist.
+func (db *database) remove(item string) bool {
+	db.mu.Lock()
+	defer db.mu.Unlock()
+
+	if _, ok := db.items[item]; !ok {
+		return false
+	}
+
+	delete(db.items, item)
+	return true
+}
+
+type entry struct {
+	item  string
+	price dollars
+}
+
+// snapshot returns all items sorted by name.
+func (db *database) snapshot() []entry {
+	db.mu.RLock()
+
+	entries := make([]entry, 0, len(db.items))
+	for item, price := range db.items {
+		entries = append(entries, entry{item, price})
+	}
+
+	db.mu.RUnlock()
+	sort.Slice(entries, func(i, j int) bool {
+		return entries[i].item < entries[j].item
+	})
+
+	return entries
 }
 
 // parseRequest extracts item from the request and, if needPrice is set, validates price too.
