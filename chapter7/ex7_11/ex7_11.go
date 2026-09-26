@@ -153,11 +153,12 @@ func parseRequest(req *http.Request, needPrice bool) (item string, price dollars
 }
 
 func (db *database) list(w http.ResponseWriter, req *http.Request) {
-	for item, price := range db.items {
-		fmt.Fprintf(w, "%s: %s\n", item, price)
+	for _, e := range db.snapshot() {
+		fmt.Fprintf(w, "%s: %s\n", e.item, e.price)
 	}
 }
 
+// price replies with the bare price of the item, like in the book's example.
 func (db *database) price(w http.ResponseWriter, req *http.Request) {
 	item := req.URL.Query().Get("item")
 	if price, ok := db.items[item]; ok {
