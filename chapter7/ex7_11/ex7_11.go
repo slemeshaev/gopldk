@@ -160,13 +160,19 @@ func (db *database) list(w http.ResponseWriter, req *http.Request) {
 
 // price replies with the bare price of the item, like in the book's example.
 func (db *database) price(w http.ResponseWriter, req *http.Request) {
-	item := req.URL.Query().Get("item")
-	if price, ok := db.items[item]; ok {
-		fmt.Fprintf(w, "%s\n", price)
-	} else {
-		w.WriteHeader(http.StatusNotFound) // 404
-		fmt.Fprintf(w, "no such item: %q\n", item)
+	item, _, err := parseRequest(req, false)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
 	}
+
+	price, ok := db.get(item)
+	if !ok {
+		http.Error(w, fmt.Sprintf("no such item: %q", item), http.StatusNotFound)
+		return
+	}
+
+	fmt.Fprintf(w, "%s\n", price)
 }
 
 func (db *database) create(w http.ResponseWriter, req *http.Request) {
