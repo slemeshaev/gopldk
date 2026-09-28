@@ -175,6 +175,23 @@ func (db *database) price(w http.ResponseWriter, req *http.Request) {
 	fmt.Fprintf(w, "%s\n", price)
 }
 
+// read replies with "item: price"
+func (db *database) read(w http.ResponseWriter, req *http.Request) {
+	item, _, err := parseRequest(req, false)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	price, ok := db.get(item)
+	if !ok {
+		http.Error(w, fmt.Sprintf("no such item: %q", item), http.StatusNotFound)
+		return
+	}
+
+	fmt.Fprintf(w, "%s: %s\n", item, price)
+}
+
 func (db *database) create(w http.ResponseWriter, req *http.Request) {
 	item := req.URL.Query().Get("item")
 	price, err := strconv.ParseFloat(req.URL.Query().Get("price"), 32)
