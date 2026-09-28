@@ -210,16 +210,6 @@ func (db *database) create(w http.ResponseWriter, req *http.Request) {
 	}
 }
 
-func (db *database) read(w http.ResponseWriter, req *http.Request) {
-	item := req.URL.Query().Get("item")
-	if price, ok := db.items[item]; ok {
-		fmt.Fprintf(w, "%s: %s\n", item, price)
-	} else {
-		w.WriteHeader(http.StatusNotFound)
-		fmt.Fprintf(w, "no such item: %q\n", item)
-	}
-}
-
 func (db *database) update(w http.ResponseWriter, req *http.Request) {
 	item := req.URL.Query().Get("item")
 	price, err := strconv.ParseFloat(req.URL.Query().Get("price"), 32)
