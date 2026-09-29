@@ -1,6 +1,6 @@
 // Exercise 7.11: Add additional handlers so that clients can create, read, update, and delete database entries.
 // For example, a request of the form /update?item=socks&price=6 will update the price of an item in the inventory
-// and report an error if the item does not exist of if the price is invalid.
+// and report an error if the item does not exist or if the price is invalid.
 // (Warning: this change introduces concurrent variable updates.)
 
 package main
@@ -47,7 +47,7 @@ func (db *database) routes() *http.ServeMux {
 	mux := http.NewServeMux()
 
 	mux.HandleFunc("/list", db.list)
-	mux.HandleFunc("/price", db.read)
+	mux.HandleFunc("/price", db.price)
 	mux.HandleFunc("/create", db.create)
 	mux.HandleFunc("/read", db.read)
 	mux.HandleFunc("/update", db.update)
@@ -193,48 +193,47 @@ func (db *database) read(w http.ResponseWriter, req *http.Request) {
 }
 
 func (db *database) create(w http.ResponseWriter, req *http.Request) {
-	item := req.URL.Query().Get("item")
-	price, err := strconv.ParseFloat(req.URL.Query().Get("price"), 32)
+	item, price, err := parseRequest(req, true)
 	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
-		fmt.Fprintf(w, "Parse price: %v.\n", err)
+		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
 
-	if _, exist := db.items[item]; exist {
-		w.WriteHeader(http.StatusBadRequest)
-		fmt.Fprintf(w, "Item %s already exists.\n", item)
-	} else {
-		db.items[item] = dollars(price)
-		fmt.Fprintf(w, "Successfully created item. %s: %s", item, db.items[item])
+	if !db.add(item, price) {
+		http.Error(w, fmt.Sprintf("item %q already exists", item), http.StatusConflict)
+		return
 	}
+
+	w.WriteHeader(http.StatusCreated)
+	fmt.Fprintf(w, "created item %s: %s\n", item, price)
 }
 
 func (db *database) update(w http.ResponseWriter, req *http.Request) {
-	item := req.URL.Query().Get("item")
-	price, err := strconv.ParseFloat(req.URL.Query().Get("price"), 32)
+	item, price, err := parseRequest(req, true)
 	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
-		fmt.Fprintf(w, "Parse price: %v.\n", err)
+		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
 
-	if _, ok := db.items[item]; ok {
-		db.items[item] = dollars(price)
-		fmt.Fprintf(w, "Successfully updated item. %s: %s\n", item, db.items[item])
-	} else {
-		w.WriteHeader(http.StatusNotFound) // 404
-		fmt.Fprintf(w, "no such item: %q\n", item)
+	if !db.set(item, price) {
+		http.Error(w, fmt.Sprintf("no such item: %q", item), http.StatusNotFound)
+		return
 	}
+
+	fmt.Fprintf(w, "updated item %s: %s\n", item, price)
 }
 
 func (db *database) delete(w http.ResponseWriter, req *http.Request) {
-	item := req.URL.Query().Get("item")
-	if _, ok := db.items[item]; ok {
-		delete(db.items, item)
-		fmt.Fprintf(w, "Successfully deleted item %s\n", item)
-	} else {
-		w.WriteHeader(http.StatusNotFound) // 404
-		fmt.Fprintf(w, "no such item: %q", item)
+	item, _, err := parseRequest(req, false)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
 	}
+
+	if !db.remove(item) {
+		http.Error(w, fmt.Sprintf("no such item: %q", item), http.StatusNotFound)
+		return
+	}
+
+	fmt.Fprintf(w, "deleted item %s\n", item)
 }
