@@ -1,11 +1,12 @@
 // Exercise 7.12: Change the handler for /list to print its output as an HTML table, not text.
-// You may find the html/template package ($4.6) useful.
+// You may find the html/template package (§4.6) useful.
 
 package main
 
 import (
 	"errors"
 	"fmt"
+	"html/template"
 	"log"
 	"math"
 	"net/http"
@@ -18,6 +19,39 @@ func main() {
 	db := newDatabase(map[string]dollars{"shoes": 50, "socks": 5})
 	log.Fatal(http.ListenAndServe("localhost:8000", db.routes()))
 }
+
+var listHTML = template.Must(template.New("shopList").Parse(`
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>ex7.12</title>
+      <style>
+        table {
+	      border-collapse: collapse;
+        }
+        td, th {
+	      border: solid 1px;
+	      padding: 0.5em;
+          text-align: right;
+        }
+      </style>
+  </head>
+  <body>
+    <table>
+      <tr>
+	    <th>Item</th>
+	    <th>Price</th>
+	  </tr>
+      {{range .}}
+      <tr>
+        <td>{{.Item}}</td>
+        <td>{{.Price}}</td>
+      </tr>
+      {{end}}
+    </table>
+  </body>
+</html>
+`))
 
 type dollars float32
 
@@ -105,8 +139,8 @@ func (db *database) remove(item string) bool {
 }
 
 type entry struct {
-	item  string
-	price dollars
+	Item  string
+	Price dollars
 }
 
 // snapshot returns all items sorted by name.
@@ -120,7 +154,7 @@ func (db *database) snapshot() []entry {
 
 	db.mu.RUnlock()
 	sort.Slice(entries, func(i, j int) bool {
-		return entries[i].item < entries[j].item
+		return entries[i].Item < entries[j].Item
 	})
 
 	return entries
@@ -151,8 +185,8 @@ func parseRequest(req *http.Request, needPrice bool) (item string, price dollars
 }
 
 func (db *database) list(w http.ResponseWriter, req *http.Request) {
-	for _, e := range db.snapshot() {
-		fmt.Fprintf(w, "%s: %s\n", e.item, e.price)
+	if err := listHTML.Execute(w, db.snapshot()); err != nil {
+		log.Printf("Template execute: %v", err)
 	}
 }
 
