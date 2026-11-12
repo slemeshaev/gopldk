@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"math"
+)
 
 // An Expr is an arithmetic expression
 type Expr interface {
@@ -10,7 +13,7 @@ type Expr interface {
 
 type Env map[Var]float64
 
-//  A Var identifies a variable, e.g., x.
+// A Var identifies a variable, e.g., x.
 type Var string
 
 func (v Var) Eval(env Env) float64 {
@@ -25,6 +28,18 @@ func (u unary) Eval(env Env) float64 {
 		return -u.x.Eval(env)
 	}
 	panic(fmt.Sprintf("unsupported unary operator: %q", u.op))
+}
+
+func (c call) Eval(env Env) float64 {
+	switch c.fn {
+	case "pow":
+		return math.Pow(c.args[0].Eval(env), c.args[1].Eval(env))
+	case "sin":
+		return math.Sin(c.args[0].Eval(env))
+	case "sqrt":
+		return math.Sqrt(c.args[0].Eval(env))
+	}
+	panic(fmt.Sprintf("unsupported function call: %s", c.fn))
 }
 
 // A literal is a numeric constant, e.g. 3.141
